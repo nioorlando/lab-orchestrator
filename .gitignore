@@ -1,2 +1,20 @@
 # Generated project secrets
 /generated/*/.env
+
+# Local private notes
+PRIVATE_CREDENTIALS.md
+
+# Generic credential files
+.env
+.env.*
+!.env.example
+*credentials*.json
+*credential*.json
+token.json
+secrets/
+credentials/
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
