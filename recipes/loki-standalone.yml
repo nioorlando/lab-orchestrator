@@ -1,0 +1,39 @@
+id: loki-standalone
+name: Grafana Loki (Standalone)
+description: Loki log store single binary.
+tags: ["loki", "monitoring", "logging"]
+difficulty: easy
+variables:
+  - key: LOKI_VERSION
+    label: Loki Version
+    default: "2.9.5"
+    required: true
+    secret: false
+    options: ["2.9.5", "2.9.3"]
+  - key: LOKI_PORT
+    label: HTTP Port
+    default: "3100"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    loki:
+      image: grafana/loki:{{LOKI_VERSION}}
+      command: ["-config.file=/etc/loki/local-config.yaml"]
+      ports:
+        - "{{LOKI_PORT}}:3100"
+
+envTemplate: |
+  LOKI_VERSION={{LOKI_VERSION}}
+  LOKI_PORT={{LOKI_PORT}}
+readmeTemplate: |
+  # Grafana Loki (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - API: http://localhost:{{LOKI_PORT}}

@@ -1,0 +1,62 @@
+id: redpanda-standalone
+name: Redpanda (Single Node)
+description: Redpanda broker with console UI.
+tags: ["redpanda", "kafka", "streaming"]
+difficulty: medium
+variables:
+  - key: REDPANDA_VERSION
+    label: Redpanda Version
+    default: "v24.1.1"
+    required: true
+    secret: false
+    options: ["v24.1.1", "v23.3.15"]
+  - key: REDPANDA_PORT
+    label: Kafka Port
+    default: "9092"
+    required: true
+    secret: false
+  - key: REDPANDA_HTTP_PORT
+    label: Admin Port
+    default: "9644"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    redpanda:
+      image: redpandadata/redpanda:{{REDPANDA_VERSION}}
+      command:
+        - redpanda
+        - start
+        - --overprovisioned
+        - --smp
+        - "1"
+        - --memory
+        - "1G"
+        - --reserve-memory
+        - "0M"
+        - --node-id
+        - "0"
+        - --kafka-addr
+        - "PLAINTEXT://0.0.0.0:9092"
+        - --advertise-kafka-addr
+        - "PLAINTEXT://localhost:{{REDPANDA_PORT}}"
+      ports:
+        - "{{REDPANDA_PORT}}:9092"
+        - "{{REDPANDA_HTTP_PORT}}:9644"
+
+envTemplate: |
+  REDPANDA_VERSION={{REDPANDA_VERSION}}
+  REDPANDA_PORT={{REDPANDA_PORT}}
+  REDPANDA_HTTP_PORT={{REDPANDA_HTTP_PORT}}
+readmeTemplate: |
+  # Redpanda (Single Node)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Kafka: {{REDPANDA_PORT}}
+  - Admin: http://localhost:{{REDPANDA_HTTP_PORT}}

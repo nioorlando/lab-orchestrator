@@ -1,0 +1,38 @@
+id: mosquitto-basic
+name: Mosquitto MQTT (Standalone)
+description: Mosquitto MQTT broker for IoT testing.
+tags: ["mqtt", "messaging"]
+difficulty: easy
+variables:
+  - key: MOSQUITTO_VERSION
+    label: Mosquitto Version
+    default: "2.0"
+    required: true
+    secret: false
+    options: ["2.0", "1.6"]
+  - key: MOSQUITTO_PORT
+    label: MQTT Port
+    default: "1883"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    mosquitto:
+      image: eclipse-mosquitto:{{MOSQUITTO_VERSION}}
+      ports:
+        - "{{MOSQUITTO_PORT}}:1883"
+
+envTemplate: |
+  MOSQUITTO_VERSION={{MOSQUITTO_VERSION}}
+  MOSQUITTO_PORT={{MOSQUITTO_PORT}}
+readmeTemplate: |
+  # Mosquitto MQTT (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - MQTT: {{MOSQUITTO_PORT}}

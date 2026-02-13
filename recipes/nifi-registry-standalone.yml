@@ -1,0 +1,38 @@
+id: nifi-registry-standalone
+name: NiFi Registry (Standalone)
+description: NiFi Registry for versioning flows.
+tags: ["nifi", "dataflow"]
+difficulty: easy
+variables:
+  - key: NIFI_REGISTRY_VERSION
+    label: NiFi Registry Version
+    default: "1.25.0"
+    required: true
+    secret: false
+    options: ["1.25.0", "1.24.0"]
+  - key: NIFI_REGISTRY_PORT
+    label: HTTP Port
+    default: "18080"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    nifi-registry:
+      image: apache/nifi-registry:{{NIFI_REGISTRY_VERSION}}
+      ports:
+        - "{{NIFI_REGISTRY_PORT}}:18080"
+
+envTemplate: |
+  NIFI_REGISTRY_VERSION={{NIFI_REGISTRY_VERSION}}
+  NIFI_REGISTRY_PORT={{NIFI_REGISTRY_PORT}}
+readmeTemplate: |
+  # NiFi Registry (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{NIFI_REGISTRY_PORT}}

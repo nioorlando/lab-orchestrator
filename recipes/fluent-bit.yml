@@ -1,0 +1,38 @@
+id: fluent-bit
+name: Fluent Bit (Standalone)
+description: Fluent Bit log processor.
+tags: ["fluentbit", "logging"]
+difficulty: easy
+variables:
+  - key: FLUENTBIT_VERSION
+    label: Fluent Bit Version
+    default: "2.2"
+    required: true
+    secret: false
+    options: ["2.2", "2.1"]
+  - key: FLUENTBIT_PORT
+    label: HTTP Port
+    default: "2020"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    fluent-bit:
+      image: fluent/fluent-bit:{{FLUENTBIT_VERSION}}
+      ports:
+        - "{{FLUENTBIT_PORT}}:2020"
+
+envTemplate: |
+  FLUENTBIT_VERSION={{FLUENTBIT_VERSION}}
+  FLUENTBIT_PORT={{FLUENTBIT_PORT}}
+readmeTemplate: |
+  # Fluent Bit (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - HTTP: http://localhost:{{FLUENTBIT_PORT}}

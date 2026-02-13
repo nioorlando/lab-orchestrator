@@ -1,0 +1,39 @@
+id: flink-standalone
+name: Apache Flink (Standalone)
+description: Flink jobmanager in standalone mode.
+tags: ["flink", "bigdata"]
+difficulty: medium
+variables:
+  - key: FLINK_VERSION
+    label: Flink Version
+    default: "1.18.1"
+    required: true
+    secret: false
+    options: ["1.18.1", "1.17.2"]
+  - key: FLINK_UI_PORT
+    label: Flink UI Port
+    default: "8081"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    flink:
+      image: flink:{{FLINK_VERSION}}
+      command: ["jobmanager"]
+      ports:
+        - "{{FLINK_UI_PORT}}:8081"
+
+envTemplate: |
+  FLINK_VERSION={{FLINK_VERSION}}
+  FLINK_UI_PORT={{FLINK_UI_PORT}}
+readmeTemplate: |
+  # Apache Flink (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{FLINK_UI_PORT}}

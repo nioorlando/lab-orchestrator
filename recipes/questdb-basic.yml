@@ -1,0 +1,46 @@
+id: questdb-basic
+name: QuestDB (Standalone)
+description: QuestDB time-series database.
+tags: ["questdb", "db"]
+difficulty: easy
+variables:
+  - key: QUESTDB_VERSION
+    label: QuestDB Version
+    default: "7.4.0"
+    required: true
+    secret: false
+    options: ["7.4.0", "7.3.2"]
+  - key: QUESTDB_PORT
+    label: HTTP Port
+    default: "9000"
+    required: true
+    secret: false
+  - key: QUESTDB_PG_PORT
+    label: Postgres Port
+    default: "8812"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    questdb:
+      image: questdb/questdb:{{QUESTDB_VERSION}}
+      ports:
+        - "{{QUESTDB_PORT}}:9000"
+        - "{{QUESTDB_PG_PORT}}:8812"
+
+envTemplate: |
+  QUESTDB_VERSION={{QUESTDB_VERSION}}
+  QUESTDB_PORT={{QUESTDB_PORT}}
+  QUESTDB_PG_PORT={{QUESTDB_PG_PORT}}
+readmeTemplate: |
+  # QuestDB (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{QUESTDB_PORT}}
+  - Postgres: {{QUESTDB_PG_PORT}}

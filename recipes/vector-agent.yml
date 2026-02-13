@@ -1,0 +1,46 @@
+id: vector-agent
+name: Vector (Standalone)
+description: Vector data pipeline agent.
+tags: ["vector", "logging", "bigdata"]
+difficulty: easy
+variables:
+  - key: VECTOR_VERSION
+    label: Vector Version
+    default: "0.35.0"
+    required: true
+    secret: false
+    options: ["0.35.0", "0.34.1"]
+  - key: VECTOR_PORT
+    label: API Port
+    default: "8686"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    vector:
+      image: timberio/vector:{{VECTOR_VERSION}}
+      command: ["-c", "/etc/vector/vector.toml"]
+      ports:
+        - "{{VECTOR_PORT}}:8686"
+
+extraFiles:
+  - path: vector.toml
+    content: |
+      [api]
+      enabled = true
+      address = "0.0.0.0:8686"
+
+envTemplate: |
+  VECTOR_VERSION={{VECTOR_VERSION}}
+  VECTOR_PORT={{VECTOR_PORT}}
+readmeTemplate: |
+  # Vector (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - API: http://localhost:{{VECTOR_PORT}}

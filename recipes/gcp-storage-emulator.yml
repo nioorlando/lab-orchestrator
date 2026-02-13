@@ -1,0 +1,32 @@
+id: gcp-storage-emulator
+name: GCS Emulator (fake-gcs-server)
+description: Google Cloud Storage emulator using fake-gcs-server.
+tags: ["gcp", "google", "gcs", "emulator"]
+difficulty: easy
+variables:
+  - key: GCS_PORT
+    label: HTTP Port
+    default: "4443"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    gcs-emulator:
+      image: fsouza/fake-gcs-server:latest
+      command: ["-scheme", "http", "-port", "{{GCS_PORT}}"]
+      ports:
+        - "{{GCS_PORT}}:{{GCS_PORT}}"
+
+envTemplate: |
+  GCS_PORT={{GCS_PORT}}
+readmeTemplate: |
+  # GCS Emulator
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Endpoint
+  - http://localhost:{{GCS_PORT}}

@@ -1,0 +1,39 @@
+id: consul-basic
+name: Consul (Standalone)
+description: HashiCorp Consul single server.
+tags: ["consul", "kv"]
+difficulty: easy
+variables:
+  - key: CONSUL_VERSION
+    label: Consul Version
+    default: "1.17"
+    required: true
+    secret: false
+    options: ["1.17", "1.16"]
+  - key: CONSUL_HTTP_PORT
+    label: HTTP Port
+    default: "8500"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    consul:
+      image: hashicorp/consul:{{CONSUL_VERSION}}
+      command: ["agent", "-server", "-bootstrap", "-ui", "-client", "0.0.0.0"]
+      ports:
+        - "{{CONSUL_HTTP_PORT}}:8500"
+
+envTemplate: |
+  CONSUL_VERSION={{CONSUL_VERSION}}
+  CONSUL_HTTP_PORT={{CONSUL_HTTP_PORT}}
+readmeTemplate: |
+  # Consul (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{CONSUL_HTTP_PORT}}

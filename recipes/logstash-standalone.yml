@@ -1,0 +1,38 @@
+id: logstash-standalone
+name: Logstash (Standalone)
+description: Logstash single container with minimal pipeline.
+tags: ["logstash", "logging"]
+difficulty: medium
+variables:
+  - key: LOGSTASH_VERSION
+    label: Logstash Version
+    default: "8.12.2"
+    required: true
+    secret: false
+    options: ["8.12.2", "8.11.0"]
+  - key: LOGSTASH_PORT
+    label: HTTP Port
+    default: "9600"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    logstash:
+      image: docker.elastic.co/logstash/logstash:{{LOGSTASH_VERSION}}
+      ports:
+        - "{{LOGSTASH_PORT}}:9600"
+
+envTemplate: |
+  LOGSTASH_VERSION={{LOGSTASH_VERSION}}
+  LOGSTASH_PORT={{LOGSTASH_PORT}}
+readmeTemplate: |
+  # Logstash (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - API: http://localhost:{{LOGSTASH_PORT}}

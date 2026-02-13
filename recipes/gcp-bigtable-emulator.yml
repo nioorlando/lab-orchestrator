@@ -1,0 +1,32 @@
+id: gcp-bigtable-emulator
+name: GCP Bigtable Emulator
+description: Google Cloud Bigtable emulator via gcloud.
+tags: ["gcp", "google", "bigtable", "emulator"]
+difficulty: medium
+variables:
+  - key: BIGTABLE_PORT
+    label: Bigtable Port
+    default: "8088"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    bigtable-emulator:
+      image: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+      command: ["bash", "-lc", "gcloud beta emulators bigtable start --host-port=0.0.0.0:{{BIGTABLE_PORT}}"]
+      ports:
+        - "{{BIGTABLE_PORT}}:{{BIGTABLE_PORT}}"
+
+envTemplate: |
+  BIGTABLE_PORT={{BIGTABLE_PORT}}
+readmeTemplate: |
+  # GCP Bigtable Emulator
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Endpoint
+  - http://localhost:{{BIGTABLE_PORT}}

@@ -1,0 +1,32 @@
+id: gcp-spanner-emulator
+name: GCP Spanner Emulator
+description: Google Cloud Spanner emulator via gcloud.
+tags: ["gcp", "google", "spanner", "emulator"]
+difficulty: medium
+variables:
+  - key: SPANNER_PORT
+    label: Spanner Port
+    default: "9010"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    spanner-emulator:
+      image: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+      command: ["bash", "-lc", "gcloud beta emulators spanner start --host-port=0.0.0.0:{{SPANNER_PORT}}"]
+      ports:
+        - "{{SPANNER_PORT}}:{{SPANNER_PORT}}"
+
+envTemplate: |
+  SPANNER_PORT={{SPANNER_PORT}}
+readmeTemplate: |
+  # GCP Spanner Emulator
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Endpoint
+  - http://localhost:{{SPANNER_PORT}}

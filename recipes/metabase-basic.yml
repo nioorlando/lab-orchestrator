@@ -1,0 +1,38 @@
+id: metabase-basic
+name: Metabase (Standalone)
+description: Metabase analytics UI with embedded DB.
+tags: ["metabase", "analytics"]
+difficulty: easy
+variables:
+  - key: METABASE_VERSION
+    label: Metabase Version
+    default: "v0.49.6"
+    required: true
+    secret: false
+    options: ["v0.49.6", "v0.48.9"]
+  - key: METABASE_PORT
+    label: HTTP Port
+    default: "3000"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    metabase:
+      image: metabase/metabase:{{METABASE_VERSION}}
+      ports:
+        - "{{METABASE_PORT}}:3000"
+
+envTemplate: |
+  METABASE_VERSION={{METABASE_VERSION}}
+  METABASE_PORT={{METABASE_PORT}}
+readmeTemplate: |
+  # Metabase (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{METABASE_PORT}}

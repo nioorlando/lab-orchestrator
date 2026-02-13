@@ -1,0 +1,55 @@
+id: mysql-basic
+name: MySQL (Standalone)
+description: Single MySQL instance for local development.
+tags: ["mysql", "db"]
+difficulty: easy
+variables:
+  - key: MYSQL_VERSION
+    label: MySQL Version
+    default: "8.3"
+    required: true
+    secret: false
+    options: ["8.3", "8.0"]
+  - key: MYSQL_PORT
+    label: MySQL Port
+    default: "3306"
+    required: true
+    secret: false
+  - key: MYSQL_ROOT_PASSWORD
+    label: MySQL Root Password
+    default: "rootpass"
+    required: true
+    secret: true
+  - key: MYSQL_DATABASE
+    label: MySQL Database
+    default: "lab"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    mysql:
+      image: mysql:{{MYSQL_VERSION}}
+      environment:
+        - MYSQL_ROOT_PASSWORD={{MYSQL_ROOT_PASSWORD}}
+        - MYSQL_DATABASE={{MYSQL_DATABASE}}
+      ports:
+        - "{{MYSQL_PORT}}:3306"
+
+envTemplate: |
+  MYSQL_VERSION={{MYSQL_VERSION}}
+  MYSQL_PORT={{MYSQL_PORT}}
+  MYSQL_ROOT_PASSWORD={{MYSQL_ROOT_PASSWORD}}
+  MYSQL_DATABASE={{MYSQL_DATABASE}}
+readmeTemplate: |
+  # MySQL (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Host: localhost
+  - Port: {{MYSQL_PORT}}
+  - DB: {{MYSQL_DATABASE}}

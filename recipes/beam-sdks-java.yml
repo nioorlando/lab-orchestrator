@@ -1,0 +1,31 @@
+id: beam-sdks-java
+name: Apache Beam SDK (Java)
+description: Apache Beam Java SDK container for running pipelines.
+tags: ["beam", "bigdata"]
+difficulty: medium
+variables:
+  - key: BEAM_VERSION
+    label: Beam Version
+    default: "2.53.0"
+    required: true
+    secret: false
+    options: ["2.53.0", "2.52.0"]
+composeTemplate: |
+  version: "3.8"
+  services:
+    beam:
+      image: apache/beam_java:{{BEAM_VERSION}}
+      command: ["bash", "-lc", "echo Beam SDK ready"]
+
+envTemplate: |
+  BEAM_VERSION={{BEAM_VERSION}}
+readmeTemplate: |
+  # Apache Beam SDK (Java)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Notes
+  - This container is for running Beam pipelines locally.

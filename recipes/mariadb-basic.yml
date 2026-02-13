@@ -1,0 +1,55 @@
+id: mariadb-basic
+name: MariaDB (Standalone)
+description: Single MariaDB instance for local development.
+tags: ["mariadb", "db"]
+difficulty: easy
+variables:
+  - key: MARIADB_VERSION
+    label: MariaDB Version
+    default: "11.4"
+    required: true
+    secret: false
+    options: ["11.4", "10.11"]
+  - key: MARIADB_PORT
+    label: MariaDB Port
+    default: "3307"
+    required: true
+    secret: false
+  - key: MARIADB_ROOT_PASSWORD
+    label: Root Password
+    default: "rootpass"
+    required: true
+    secret: true
+  - key: MARIADB_DATABASE
+    label: Database Name
+    default: "lab"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    mariadb:
+      image: mariadb:{{MARIADB_VERSION}}
+      environment:
+        - MARIADB_ROOT_PASSWORD={{MARIADB_ROOT_PASSWORD}}
+        - MARIADB_DATABASE={{MARIADB_DATABASE}}
+      ports:
+        - "{{MARIADB_PORT}}:3306"
+
+envTemplate: |
+  MARIADB_VERSION={{MARIADB_VERSION}}
+  MARIADB_PORT={{MARIADB_PORT}}
+  MARIADB_ROOT_PASSWORD={{MARIADB_ROOT_PASSWORD}}
+  MARIADB_DATABASE={{MARIADB_DATABASE}}
+readmeTemplate: |
+  # MariaDB (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Host: localhost
+  - Port: {{MARIADB_PORT}}
+  - DB: {{MARIADB_DATABASE}}

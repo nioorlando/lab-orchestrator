@@ -1,0 +1,39 @@
+id: nomad-basic
+name: Nomad (Standalone)
+description: Nomad dev server for local scheduling.
+tags: ["nomad", "orchestration"]
+difficulty: medium
+variables:
+  - key: NOMAD_VERSION
+    label: Nomad Version
+    default: "1.7.6"
+    required: true
+    secret: false
+    options: ["1.7.6", "1.6.4"]
+  - key: NOMAD_HTTP_PORT
+    label: HTTP Port
+    default: "4646"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    nomad:
+      image: hashicorp/nomad:{{NOMAD_VERSION}}
+      command: ["agent", "-dev", "-bind", "0.0.0.0"]
+      ports:
+        - "{{NOMAD_HTTP_PORT}}:4646"
+
+envTemplate: |
+  NOMAD_VERSION={{NOMAD_VERSION}}
+  NOMAD_HTTP_PORT={{NOMAD_HTTP_PORT}}
+readmeTemplate: |
+  # Nomad (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{NOMAD_HTTP_PORT}}

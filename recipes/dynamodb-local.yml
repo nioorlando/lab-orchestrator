@@ -1,0 +1,39 @@
+id: dynamodb-local
+name: DynamoDB Local (Standalone)
+description: Local DynamoDB for testing.
+tags: ["dynamodb", "db"]
+difficulty: easy
+variables:
+  - key: DYNAMODB_VERSION
+    label: DynamoDB Version
+    default: "latest"
+    required: true
+    secret: false
+    options: ["latest"]
+  - key: DYNAMODB_PORT
+    label: Port
+    default: "8000"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    dynamodb:
+      image: amazon/dynamodb-local:{{DYNAMODB_VERSION}}
+      command: ["-jar", "DynamoDBLocal.jar", "-sharedDb", "-inMemory"]
+      ports:
+        - "{{DYNAMODB_PORT}}:8000"
+
+envTemplate: |
+  DYNAMODB_VERSION={{DYNAMODB_VERSION}}
+  DYNAMODB_PORT={{DYNAMODB_PORT}}
+readmeTemplate: |
+  # DynamoDB Local (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Endpoint: http://localhost:{{DYNAMODB_PORT}}

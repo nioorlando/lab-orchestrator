@@ -1,0 +1,32 @@
+id: gcp-bigquery-emulator
+name: BigQuery Emulator
+description: BigQuery emulator for local testing.
+tags: ["gcp", "google", "bigquery", "emulator"]
+difficulty: medium
+variables:
+  - key: BIGQUERY_PORT
+    label: HTTP Port
+    default: "9050"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    bigquery-emulator:
+      image: ghcr.io/goccy/bigquery-emulator:latest
+      command: ["--project", "local", "--port", "{{BIGQUERY_PORT}}"]
+      ports:
+        - "{{BIGQUERY_PORT}}:{{BIGQUERY_PORT}}"
+
+envTemplate: |
+  BIGQUERY_PORT={{BIGQUERY_PORT}}
+readmeTemplate: |
+  # BigQuery Emulator
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Endpoint
+  - http://localhost:{{BIGQUERY_PORT}}

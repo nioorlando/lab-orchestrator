@@ -1,0 +1,38 @@
+id: hazelcast-standalone
+name: Hazelcast (Standalone)
+description: Hazelcast in-memory data grid.
+tags: ["hazelcast", "bigdata", "db"]
+difficulty: easy
+variables:
+  - key: HZ_VERSION
+    label: Hazelcast Version
+    default: "5.3.6"
+    required: true
+    secret: false
+    options: ["5.3.6", "5.2.4"]
+  - key: HZ_PORT
+    label: Hazelcast Port
+    default: "5701"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    hazelcast:
+      image: hazelcast/hazelcast:{{HZ_VERSION}}
+      ports:
+        - "{{HZ_PORT}}:5701"
+
+envTemplate: |
+  HZ_VERSION={{HZ_VERSION}}
+  HZ_PORT={{HZ_PORT}}
+readmeTemplate: |
+  # Hazelcast (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Port: {{HZ_PORT}}

@@ -1,0 +1,55 @@
+id: airflow-standalone
+name: Airflow (Standalone SQLite)
+description: Airflow webserver + scheduler using SQLite and SequentialExecutor.
+tags: ["airflow", "workflow"]
+difficulty: medium
+variables:
+  - key: AIRFLOW_VERSION
+    label: Airflow Version
+    default: "2.8.4"
+    required: true
+    secret: false
+    options: ["2.8.4", "2.9.0"]
+  - key: AIRFLOW_PORT
+    label: Airflow Web Port
+    default: "8089"
+    required: true
+    secret: false
+  - key: AIRFLOW_USER
+    label: Airflow Admin User
+    default: "admin"
+    required: true
+    secret: false
+  - key: AIRFLOW_PASSWORD
+    label: Airflow Admin Password
+    default: "admin"
+    required: true
+    secret: true
+composeTemplate: |
+  version: "3.8"
+  services:
+    airflow:
+      image: apache/airflow:{{AIRFLOW_VERSION}}
+      environment:
+        - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
+        - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+        - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      command: ["/bin/bash", "-c", "airflow db init && airflow users create --username {{AIRFLOW_USER}} --password {{AIRFLOW_PASSWORD}} --firstname Lab --lastname Admin --role Admin --email admin@local && airflow webserver"]
+      ports:
+        - "{{AIRFLOW_PORT}}:8080"
+
+envTemplate: |
+  AIRFLOW_VERSION={{AIRFLOW_VERSION}}
+  AIRFLOW_PORT={{AIRFLOW_PORT}}
+  AIRFLOW_USER={{AIRFLOW_USER}}
+  AIRFLOW_PASSWORD={{AIRFLOW_PASSWORD}}
+readmeTemplate: |
+  # Airflow (Standalone SQLite)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{AIRFLOW_PORT}} (user: {{AIRFLOW_USER}})

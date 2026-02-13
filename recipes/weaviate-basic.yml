@@ -1,0 +1,42 @@
+id: weaviate-basic
+name: Weaviate (Standalone)
+description: Weaviate vector search engine.
+tags: ["weaviate", "vector", "db"]
+difficulty: medium
+variables:
+  - key: WEAVIATE_VERSION
+    label: Weaviate Version
+    default: "1.23.4"
+    required: true
+    secret: false
+    options: ["1.23.4", "1.22.5"]
+  - key: WEAVIATE_PORT
+    label: HTTP Port
+    default: "8080"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    weaviate:
+      image: semitechnologies/weaviate:{{WEAVIATE_VERSION}}
+      environment:
+        - QUERY_DEFAULTS_LIMIT=25
+        - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
+        - PERSISTENCE_DATA_PATH=/var/lib/weaviate
+      ports:
+        - "{{WEAVIATE_PORT}}:8080"
+
+envTemplate: |
+  WEAVIATE_VERSION={{WEAVIATE_VERSION}}
+  WEAVIATE_PORT={{WEAVIATE_PORT}}
+readmeTemplate: |
+  # Weaviate (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - API: http://localhost:{{WEAVIATE_PORT}}

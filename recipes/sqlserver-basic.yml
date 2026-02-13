@@ -1,0 +1,49 @@
+id: sqlserver-basic
+name: SQL Server (Standalone)
+description: Microsoft SQL Server for local development.
+tags: ["sqlserver", "db"]
+difficulty: medium
+variables:
+  - key: SQLSERVER_VERSION
+    label: SQL Server Version
+    default: "2019-latest"
+    required: true
+    secret: false
+    options: ["2019-latest", "2022-latest"]
+  - key: SQLSERVER_PORT
+    label: SQL Server Port
+    default: "1433"
+    required: true
+    secret: false
+  - key: SA_PASSWORD
+    label: SA Password
+    default: "StrongPassw0rd!"
+    required: true
+    secret: true
+composeTemplate: |
+  version: "3.8"
+  services:
+    sqlserver:
+      image: mcr.microsoft.com/mssql/server:{{SQLSERVER_VERSION}}
+      environment:
+        - ACCEPT_EULA=Y
+        - MSSQL_SA_PASSWORD={{SA_PASSWORD}}
+      ports:
+        - "{{SQLSERVER_PORT}}:1433"
+
+envTemplate: |
+  SQLSERVER_VERSION={{SQLSERVER_VERSION}}
+  SQLSERVER_PORT={{SQLSERVER_PORT}}
+  SA_PASSWORD={{SA_PASSWORD}}
+readmeTemplate: |
+  # SQL Server (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Host: localhost
+  - Port: {{SQLSERVER_PORT}}
+  - User: sa

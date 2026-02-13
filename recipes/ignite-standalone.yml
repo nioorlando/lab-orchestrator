@@ -1,0 +1,38 @@
+id: ignite-standalone
+name: Apache Ignite (Standalone)
+description: Apache Ignite in-memory data grid.
+tags: ["ignite", "bigdata", "db"]
+difficulty: medium
+variables:
+  - key: IGNITE_VERSION
+    label: Ignite Version
+    default: "2.16.0"
+    required: true
+    secret: false
+    options: ["2.16.0", "2.15.0"]
+  - key: IGNITE_PORT
+    label: Thin Client Port
+    default: "10800"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    ignite:
+      image: apacheignite/ignite:{{IGNITE_VERSION}}
+      ports:
+        - "{{IGNITE_PORT}}:10800"
+
+envTemplate: |
+  IGNITE_VERSION={{IGNITE_VERSION}}
+  IGNITE_PORT={{IGNITE_PORT}}
+readmeTemplate: |
+  # Apache Ignite (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Thin Client: {{IGNITE_PORT}}

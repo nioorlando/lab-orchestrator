@@ -1,0 +1,32 @@
+id: gcp-pubsub-emulator
+name: GCP Pub/Sub Emulator
+description: Google Cloud Pub/Sub emulator via gcloud.
+tags: ["gcp", "google", "pubsub", "emulator"]
+difficulty: medium
+variables:
+  - key: PUBSUB_PORT
+    label: Pub/Sub Port
+    default: "8085"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    pubsub-emulator:
+      image: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+      command: ["bash", "-lc", "gcloud beta emulators pubsub start --host-port=0.0.0.0:{{PUBSUB_PORT}}"]
+      ports:
+        - "{{PUBSUB_PORT}}:{{PUBSUB_PORT}}"
+
+envTemplate: |
+  PUBSUB_PORT={{PUBSUB_PORT}}
+readmeTemplate: |
+  # GCP Pub/Sub Emulator
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Endpoint
+  - http://localhost:{{PUBSUB_PORT}}

@@ -1,0 +1,42 @@
+id: elasticsearch-basic
+name: Elasticsearch (Standalone)
+description: Single-node Elasticsearch for local search testing.
+tags: ["elasticsearch", "search"]
+difficulty: medium
+variables:
+  - key: ELASTIC_VERSION
+    label: Elasticsearch Version
+    default: "8.12.2"
+    required: true
+    secret: false
+    options: ["8.12.2", "8.11.0"]
+  - key: ELASTIC_PORT
+    label: Elasticsearch Port
+    default: "9200"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    elasticsearch:
+      image: docker.elastic.co/elasticsearch/elasticsearch:{{ELASTIC_VERSION}}
+      environment:
+        - discovery.type=single-node
+        - xpack.security.enabled=false
+        - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      ports:
+        - "{{ELASTIC_PORT}}:9200"
+
+envTemplate: |
+  ELASTIC_VERSION={{ELASTIC_VERSION}}
+  ELASTIC_PORT={{ELASTIC_PORT}}
+readmeTemplate: |
+  # Elasticsearch (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - API: http://localhost:{{ELASTIC_PORT}}

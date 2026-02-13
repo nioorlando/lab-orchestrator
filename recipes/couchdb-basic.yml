@@ -1,0 +1,53 @@
+id: couchdb-basic
+name: CouchDB (Standalone)
+description: Apache CouchDB with Fauxton UI.
+tags: ["couchdb", "db"]
+difficulty: easy
+variables:
+  - key: COUCHDB_VERSION
+    label: CouchDB Version
+    default: "3.3"
+    required: true
+    secret: false
+    options: ["3.3", "3.2"]
+  - key: COUCHDB_PORT
+    label: HTTP Port
+    default: "5984"
+    required: true
+    secret: false
+  - key: COUCHDB_USER
+    label: Admin User
+    default: "admin"
+    required: true
+    secret: false
+  - key: COUCHDB_PASSWORD
+    label: Admin Password
+    default: "adminpass"
+    required: true
+    secret: true
+composeTemplate: |
+  version: "3.8"
+  services:
+    couchdb:
+      image: couchdb:{{COUCHDB_VERSION}}
+      environment:
+        - COUCHDB_USER={{COUCHDB_USER}}
+        - COUCHDB_PASSWORD={{COUCHDB_PASSWORD}}
+      ports:
+        - "{{COUCHDB_PORT}}:5984"
+
+envTemplate: |
+  COUCHDB_VERSION={{COUCHDB_VERSION}}
+  COUCHDB_PORT={{COUCHDB_PORT}}
+  COUCHDB_USER={{COUCHDB_USER}}
+  COUCHDB_PASSWORD={{COUCHDB_PASSWORD}}
+readmeTemplate: |
+  # CouchDB (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{COUCHDB_PORT}}/_utils

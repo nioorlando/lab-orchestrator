@@ -1,0 +1,46 @@
+id: redis-stack-basic
+name: Redis Stack (Standalone)
+description: Redis Stack with RedisInsight UI.
+tags: ["redis", "db"]
+difficulty: easy
+variables:
+  - key: REDIS_STACK_VERSION
+    label: Redis Stack Version
+    default: "latest"
+    required: true
+    secret: false
+    options: ["latest"]
+  - key: REDIS_PORT
+    label: Redis Port
+    default: "6379"
+    required: true
+    secret: false
+  - key: REDISINSIGHT_PORT
+    label: RedisInsight Port
+    default: "8001"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    redis-stack:
+      image: redis/redis-stack:{{REDIS_STACK_VERSION}}
+      ports:
+        - "{{REDIS_PORT}}:6379"
+        - "{{REDISINSIGHT_PORT}}:8001"
+
+envTemplate: |
+  REDIS_STACK_VERSION={{REDIS_STACK_VERSION}}
+  REDIS_PORT={{REDIS_PORT}}
+  REDISINSIGHT_PORT={{REDISINSIGHT_PORT}}
+readmeTemplate: |
+  # Redis Stack (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Redis: {{REDIS_PORT}}
+  - RedisInsight: http://localhost:{{REDISINSIGHT_PORT}}

@@ -1,0 +1,47 @@
+id: cratedb-basic
+name: CrateDB (Standalone)
+description: CrateDB SQL database.
+tags: ["cratedb", "db"]
+difficulty: medium
+variables:
+  - key: CRATEDB_VERSION
+    label: CrateDB Version
+    default: "5.5.3"
+    required: true
+    secret: false
+    options: ["5.5.3", "5.4.6"]
+  - key: CRATEDB_PORT
+    label: HTTP Port
+    default: "4200"
+    required: true
+    secret: false
+  - key: CRATEDB_PG_PORT
+    label: Postgres Port
+    default: "5432"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    cratedb:
+      image: crate:{{CRATEDB_VERSION}}
+      command: ["crate", "-Cdiscovery.type=single-node"]
+      ports:
+        - "{{CRATEDB_PORT}}:4200"
+        - "{{CRATEDB_PG_PORT}}:5432"
+
+envTemplate: |
+  CRATEDB_VERSION={{CRATEDB_VERSION}}
+  CRATEDB_PORT={{CRATEDB_PORT}}
+  CRATEDB_PG_PORT={{CRATEDB_PG_PORT}}
+readmeTemplate: |
+  # CrateDB (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{CRATEDB_PORT}}
+  - Postgres: {{CRATEDB_PG_PORT}}

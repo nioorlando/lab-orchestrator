@@ -1,0 +1,39 @@
+id: ray-head
+name: Ray Head Node (Standalone)
+description: Ray head node for local compute.
+tags: ["ray", "bigdata", "compute"]
+difficulty: medium
+variables:
+  - key: RAY_VERSION
+    label: Ray Version
+    default: "2.10.0"
+    required: true
+    secret: false
+    options: ["2.10.0", "2.9.3"]
+  - key: RAY_DASHBOARD_PORT
+    label: Dashboard Port
+    default: "8265"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    ray:
+      image: rayproject/ray:{{RAY_VERSION}}
+      command: ["bash", "-lc", "ray start --head --dashboard-host=0.0.0.0"]
+      ports:
+        - "{{RAY_DASHBOARD_PORT}}:8265"
+
+envTemplate: |
+  RAY_VERSION={{RAY_VERSION}}
+  RAY_DASHBOARD_PORT={{RAY_DASHBOARD_PORT}}
+readmeTemplate: |
+  # Ray Head Node (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Dashboard: http://localhost:{{RAY_DASHBOARD_PORT}}

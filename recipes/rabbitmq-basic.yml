@@ -1,0 +1,46 @@
+id: rabbitmq-basic
+name: RabbitMQ (Standalone)
+description: RabbitMQ with management UI.
+tags: ["rabbitmq", "messaging"]
+difficulty: easy
+variables:
+  - key: RABBITMQ_VERSION
+    label: RabbitMQ Version
+    default: "3-management"
+    required: true
+    secret: false
+    options: ["3-management", "3.12-management"]
+  - key: RABBITMQ_PORT
+    label: AMQP Port
+    default: "5672"
+    required: true
+    secret: false
+  - key: RABBITMQ_MANAGEMENT_PORT
+    label: Management UI Port
+    default: "15672"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    rabbitmq:
+      image: rabbitmq:{{RABBITMQ_VERSION}}
+      ports:
+        - "{{RABBITMQ_PORT}}:5672"
+        - "{{RABBITMQ_MANAGEMENT_PORT}}:15672"
+
+envTemplate: |
+  RABBITMQ_VERSION={{RABBITMQ_VERSION}}
+  RABBITMQ_PORT={{RABBITMQ_PORT}}
+  RABBITMQ_MANAGEMENT_PORT={{RABBITMQ_MANAGEMENT_PORT}}
+readmeTemplate: |
+  # RabbitMQ (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - AMQP: {{RABBITMQ_PORT}}
+  - UI: http://localhost:{{RABBITMQ_MANAGEMENT_PORT}}

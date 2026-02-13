@@ -1,0 +1,55 @@
+id: timescaledb-basic
+name: TimescaleDB (Standalone)
+description: TimescaleDB (Postgres extension) for time-series workloads.
+tags: ["timescaledb", "postgres", "db"]
+difficulty: medium
+variables:
+  - key: TIMESCALE_VERSION
+    label: TimescaleDB Version
+    default: "latest-pg16"
+    required: true
+    secret: false
+    options: ["latest-pg16", "latest-pg15"]
+  - key: TIMESCALE_PORT
+    label: Port
+    default: "5432"
+    required: true
+    secret: false
+  - key: TIMESCALE_PASSWORD
+    label: Password
+    default: "postgres"
+    required: true
+    secret: true
+  - key: TIMESCALE_DB
+    label: Database
+    default: "lab"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    timescaledb:
+      image: timescale/timescaledb:{{TIMESCALE_VERSION}}
+      environment:
+        - POSTGRES_PASSWORD={{TIMESCALE_PASSWORD}}
+        - POSTGRES_DB={{TIMESCALE_DB}}
+      ports:
+        - "{{TIMESCALE_PORT}}:5432"
+
+envTemplate: |
+  TIMESCALE_VERSION={{TIMESCALE_VERSION}}
+  TIMESCALE_PORT={{TIMESCALE_PORT}}
+  TIMESCALE_PASSWORD={{TIMESCALE_PASSWORD}}
+  TIMESCALE_DB={{TIMESCALE_DB}}
+readmeTemplate: |
+  # TimescaleDB (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Host: localhost
+  - Port: {{TIMESCALE_PORT}}
+  - DB: {{TIMESCALE_DB}}

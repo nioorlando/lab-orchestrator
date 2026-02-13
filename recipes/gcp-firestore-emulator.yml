@@ -1,0 +1,32 @@
+id: gcp-firestore-emulator
+name: GCP Firestore Emulator
+description: Google Cloud Firestore emulator via gcloud.
+tags: ["gcp", "google", "firestore", "emulator"]
+difficulty: medium
+variables:
+  - key: FIRESTORE_PORT
+    label: Firestore Port
+    default: "8086"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    firestore-emulator:
+      image: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+      command: ["bash", "-lc", "gcloud beta emulators firestore start --host-port=0.0.0.0:{{FIRESTORE_PORT}}"]
+      ports:
+        - "{{FIRESTORE_PORT}}:{{FIRESTORE_PORT}}"
+
+envTemplate: |
+  FIRESTORE_PORT={{FIRESTORE_PORT}}
+readmeTemplate: |
+  # GCP Firestore Emulator
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Endpoint
+  - http://localhost:{{FIRESTORE_PORT}}

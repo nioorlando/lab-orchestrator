@@ -1,0 +1,54 @@
+id: mongodb-basic
+name: MongoDB (Standalone)
+description: Single MongoDB instance for local development.
+tags: ["mongodb", "db"]
+difficulty: easy
+variables:
+  - key: MONGO_VERSION
+    label: MongoDB Version
+    default: "7"
+    required: true
+    secret: false
+    options: ["7", "6"]
+  - key: MONGO_PORT
+    label: MongoDB Port
+    default: "27017"
+    required: true
+    secret: false
+  - key: MONGO_INITDB_ROOT_USERNAME
+    label: Root Username
+    default: "root"
+    required: true
+    secret: false
+  - key: MONGO_INITDB_ROOT_PASSWORD
+    label: Root Password
+    default: "rootpass"
+    required: true
+    secret: true
+composeTemplate: |
+  version: "3.8"
+  services:
+    mongo:
+      image: mongo:{{MONGO_VERSION}}
+      environment:
+        - MONGO_INITDB_ROOT_USERNAME={{MONGO_INITDB_ROOT_USERNAME}}
+        - MONGO_INITDB_ROOT_PASSWORD={{MONGO_INITDB_ROOT_PASSWORD}}
+      ports:
+        - "{{MONGO_PORT}}:27017"
+
+envTemplate: |
+  MONGO_VERSION={{MONGO_VERSION}}
+  MONGO_PORT={{MONGO_PORT}}
+  MONGO_INITDB_ROOT_USERNAME={{MONGO_INITDB_ROOT_USERNAME}}
+  MONGO_INITDB_ROOT_PASSWORD={{MONGO_INITDB_ROOT_PASSWORD}}
+readmeTemplate: |
+  # MongoDB (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Host: localhost
+  - Port: {{MONGO_PORT}}

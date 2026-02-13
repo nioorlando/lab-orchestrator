@@ -1,0 +1,47 @@
+id: pulsar-standalone
+name: Apache Pulsar (Standalone)
+description: Pulsar standalone broker for messaging experiments.
+tags: ["pulsar", "messaging"]
+difficulty: medium
+variables:
+  - key: PULSAR_VERSION
+    label: Pulsar Version
+    default: "3.2.0"
+    required: true
+    secret: false
+    options: ["3.2.0", "3.1.1"]
+  - key: PULSAR_PORT
+    label: Broker Port
+    default: "6650"
+    required: true
+    secret: false
+  - key: PULSAR_HTTP_PORT
+    label: Admin Port
+    default: "8080"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    pulsar:
+      image: apachepulsar/pulsar:{{PULSAR_VERSION}}
+      command: ["bin/pulsar", "standalone"]
+      ports:
+        - "{{PULSAR_PORT}}:6650"
+        - "{{PULSAR_HTTP_PORT}}:8080"
+
+envTemplate: |
+  PULSAR_VERSION={{PULSAR_VERSION}}
+  PULSAR_PORT={{PULSAR_PORT}}
+  PULSAR_HTTP_PORT={{PULSAR_HTTP_PORT}}
+readmeTemplate: |
+  # Apache Pulsar (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Broker: {{PULSAR_PORT}}
+  - Admin: http://localhost:{{PULSAR_HTTP_PORT}}

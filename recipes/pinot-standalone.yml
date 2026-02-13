@@ -1,0 +1,39 @@
+id: pinot-standalone
+name: Apache Pinot (Standalone)
+description: Pinot quickstart single container.
+tags: ["pinot", "bigdata"]
+difficulty: medium
+variables:
+  - key: PINOT_VERSION
+    label: Pinot Version
+    default: "latest"
+    required: true
+    secret: false
+    options: ["latest"]
+  - key: PINOT_PORT
+    label: HTTP Port
+    default: "9000"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    pinot:
+      image: apachepinot/pinot:{{PINOT_VERSION}}
+      command: ["QuickStart", "-type", "batch"]
+      ports:
+        - "{{PINOT_PORT}}:9000"
+
+envTemplate: |
+  PINOT_VERSION={{PINOT_VERSION}}
+  PINOT_PORT={{PINOT_PORT}}
+readmeTemplate: |
+  # Apache Pinot (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{PINOT_PORT}}

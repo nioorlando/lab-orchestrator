@@ -1,0 +1,46 @@
+id: arangodb-basic
+name: ArangoDB (Standalone)
+description: ArangoDB multi-model database with web UI.
+tags: ["arangodb", "db"]
+difficulty: easy
+variables:
+  - key: ARANGODB_VERSION
+    label: ArangoDB Version
+    default: "3.11"
+    required: true
+    secret: false
+    options: ["3.11", "3.10"]
+  - key: ARANGODB_PORT
+    label: HTTP Port
+    default: "8529"
+    required: true
+    secret: false
+  - key: ARANGODB_ROOT_PASSWORD
+    label: Root Password
+    default: "arangopass"
+    required: true
+    secret: true
+composeTemplate: |
+  version: "3.8"
+  services:
+    arangodb:
+      image: arangodb:{{ARANGODB_VERSION}}
+      environment:
+        - ARANGO_ROOT_PASSWORD={{ARANGODB_ROOT_PASSWORD}}
+      ports:
+        - "{{ARANGODB_PORT}}:8529"
+
+envTemplate: |
+  ARANGODB_VERSION={{ARANGODB_VERSION}}
+  ARANGODB_PORT={{ARANGODB_PORT}}
+  ARANGODB_ROOT_PASSWORD={{ARANGODB_ROOT_PASSWORD}}
+readmeTemplate: |
+  # ArangoDB (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{ARANGODB_PORT}}

@@ -1,0 +1,40 @@
+id: spark-standalone
+name: Apache Spark (Standalone)
+description: Spark master in standalone mode for local testing.
+tags: ["spark", "bigdata"]
+difficulty: medium
+variables:
+  - key: SPARK_VERSION
+    label: Spark Version
+    default: "3.5.0"
+    required: true
+    secret: false
+    options: ["3.5.0", "3.4.2"]
+  - key: SPARK_UI_PORT
+    label: Spark UI Port
+    default: "8080"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    spark:
+      image: bitnami/spark:{{SPARK_VERSION}}
+      environment:
+        - SPARK_MODE=master
+      ports:
+        - "{{SPARK_UI_PORT}}:8080"
+
+envTemplate: |
+  SPARK_VERSION={{SPARK_VERSION}}
+  SPARK_UI_PORT={{SPARK_UI_PORT}}
+readmeTemplate: |
+  # Apache Spark (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{SPARK_UI_PORT}}

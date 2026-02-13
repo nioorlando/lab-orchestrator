@@ -1,0 +1,54 @@
+id: openldap-basic
+name: OpenLDAP (Standalone)
+description: OpenLDAP directory server.
+tags: ["ldap", "auth"]
+difficulty: medium
+variables:
+  - key: OPENLDAP_VERSION
+    label: OpenLDAP Version
+    default: "1.5"
+    required: true
+    secret: false
+    options: ["1.5", "1.6"]
+  - key: OPENLDAP_PORT
+    label: LDAP Port
+    default: "389"
+    required: true
+    secret: false
+  - key: LDAP_ADMIN_PASSWORD
+    label: Admin Password
+    default: "adminpass"
+    required: true
+    secret: true
+  - key: LDAP_DOMAIN
+    label: LDAP Domain
+    default: "example.org"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    openldap:
+      image: osixia/openldap:{{OPENLDAP_VERSION}}
+      environment:
+        - LDAP_ADMIN_PASSWORD={{LDAP_ADMIN_PASSWORD}}
+        - LDAP_DOMAIN={{LDAP_DOMAIN}}
+      ports:
+        - "{{OPENLDAP_PORT}}:389"
+
+envTemplate: |
+  OPENLDAP_VERSION={{OPENLDAP_VERSION}}
+  OPENLDAP_PORT={{OPENLDAP_PORT}}
+  LDAP_ADMIN_PASSWORD={{LDAP_ADMIN_PASSWORD}}
+  LDAP_DOMAIN={{LDAP_DOMAIN}}
+readmeTemplate: |
+  # OpenLDAP (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - LDAP: {{OPENLDAP_PORT}}
+  - Base DN: {{LDAP_DOMAIN}}

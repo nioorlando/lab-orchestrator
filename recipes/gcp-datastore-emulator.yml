@@ -1,0 +1,32 @@
+id: gcp-datastore-emulator
+name: GCP Datastore Emulator
+description: Google Cloud Datastore emulator via gcloud.
+tags: ["gcp", "google", "datastore", "emulator"]
+difficulty: medium
+variables:
+  - key: DATASTORE_PORT
+    label: Datastore Port
+    default: "8087"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    datastore-emulator:
+      image: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+      command: ["bash", "-lc", "gcloud beta emulators datastore start --host-port=0.0.0.0:{{DATASTORE_PORT}}"]
+      ports:
+        - "{{DATASTORE_PORT}}:{{DATASTORE_PORT}}"
+
+envTemplate: |
+  DATASTORE_PORT={{DATASTORE_PORT}}
+readmeTemplate: |
+  # GCP Datastore Emulator
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Endpoint
+  - http://localhost:{{DATASTORE_PORT}}

@@ -1,0 +1,47 @@
+id: yugabytedb-standalone
+name: YugabyteDB (Standalone)
+description: YugabyteDB single container in quickstart mode.
+tags: ["yugabytedb", "db"]
+difficulty: medium
+variables:
+  - key: YB_VERSION
+    label: Yugabyte Version
+    default: "2.20.1.3"
+    required: true
+    secret: false
+    options: ["2.20.1.3", "2.18.4.0"]
+  - key: YB_UI_PORT
+    label: UI Port
+    default: "7000"
+    required: true
+    secret: false
+  - key: YB_YSQL_PORT
+    label: YSQL Port
+    default: "5433"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    yugabytedb:
+      image: yugabytedb/yugabyte:{{YB_VERSION}}
+      command: ["bin/yugabyted", "start", "--base_dir=/tmp/yugabyte", "--daemon=false"]
+      ports:
+        - "{{YB_UI_PORT}}:7000"
+        - "{{YB_YSQL_PORT}}:5433"
+
+envTemplate: |
+  YB_VERSION={{YB_VERSION}}
+  YB_UI_PORT={{YB_UI_PORT}}
+  YB_YSQL_PORT={{YB_YSQL_PORT}}
+readmeTemplate: |
+  # YugabyteDB (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{YB_UI_PORT}}
+  - YSQL: {{YB_YSQL_PORT}}

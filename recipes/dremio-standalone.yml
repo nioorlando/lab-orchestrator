@@ -1,0 +1,38 @@
+id: dremio-standalone
+name: Dremio (Standalone)
+description: Dremio single container for analytics.
+tags: ["dremio", "analytics", "bigdata"]
+difficulty: medium
+variables:
+  - key: DREMIO_VERSION
+    label: Dremio Version
+    default: "24.1"
+    required: true
+    secret: false
+    options: ["24.1", "23.0"]
+  - key: DREMIO_PORT
+    label: HTTP Port
+    default: "9047"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    dremio:
+      image: dremio/dremio-oss:{{DREMIO_VERSION}}
+      ports:
+        - "{{DREMIO_PORT}}:9047"
+
+envTemplate: |
+  DREMIO_VERSION={{DREMIO_VERSION}}
+  DREMIO_PORT={{DREMIO_PORT}}
+readmeTemplate: |
+  # Dremio (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{DREMIO_PORT}}

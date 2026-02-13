@@ -1,0 +1,39 @@
+id: etcd-basic
+name: etcd (Standalone)
+description: etcd key-value store for config testing.
+tags: ["etcd", "kv"]
+difficulty: easy
+variables:
+  - key: ETCD_VERSION
+    label: etcd Version
+    default: "3.5.12"
+    required: true
+    secret: false
+    options: ["3.5.12", "3.5.9"]
+  - key: ETCD_CLIENT_PORT
+    label: Client Port
+    default: "2379"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    etcd:
+      image: quay.io/coreos/etcd:v{{ETCD_VERSION}}
+      command: ["/usr/local/bin/etcd", "--listen-client-urls=http://0.0.0.0:2379", "--advertise-client-urls=http://0.0.0.0:2379", "--listen-peer-urls=http://0.0.0.0:2380"]
+      ports:
+        - "{{ETCD_CLIENT_PORT}}:2379"
+
+envTemplate: |
+  ETCD_VERSION={{ETCD_VERSION}}
+  ETCD_CLIENT_PORT={{ETCD_CLIENT_PORT}}
+readmeTemplate: |
+  # etcd (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Client: {{ETCD_CLIENT_PORT}}

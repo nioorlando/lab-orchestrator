@@ -1,0 +1,45 @@
+id: emqx-basic
+name: EMQX (Standalone)
+description: EMQX MQTT broker with dashboard.
+tags: ["mqtt", "messaging"]
+difficulty: easy
+variables:
+  - key: EMQX_VERSION
+    label: EMQX Version
+    default: "5.5.0"
+    required: true
+    secret: false
+    options: ["5.5.0", "5.4.0"]
+  - key: EMQX_PORT
+    label: MQTT Port
+    default: "1883"
+    required: true
+    secret: false
+  - key: EMQX_DASHBOARD_PORT
+    label: Dashboard Port
+    default: "18083"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    emqx:
+      image: emqx/emqx:{{EMQX_VERSION}}
+      ports:
+        - "{{EMQX_PORT}}:1883"
+        - "{{EMQX_DASHBOARD_PORT}}:18083"
+
+envTemplate: |
+  EMQX_VERSION={{EMQX_VERSION}}
+  EMQX_PORT={{EMQX_PORT}}
+  EMQX_DASHBOARD_PORT={{EMQX_DASHBOARD_PORT}}
+readmeTemplate: |
+  # EMQX (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Dashboard: http://localhost:{{EMQX_DASHBOARD_PORT}}

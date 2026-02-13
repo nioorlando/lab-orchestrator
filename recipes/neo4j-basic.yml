@@ -1,0 +1,53 @@
+id: neo4j-basic
+name: Neo4j (Standalone)
+description: Neo4j graph database with browser UI.
+tags: ["neo4j", "db"]
+difficulty: easy
+variables:
+  - key: NEO4J_VERSION
+    label: Neo4j Version
+    default: "5.18"
+    required: true
+    secret: false
+    options: ["5.18", "5.17"]
+  - key: NEO4J_BOLT_PORT
+    label: Bolt Port
+    default: "7687"
+    required: true
+    secret: false
+  - key: NEO4J_HTTP_PORT
+    label: HTTP Port
+    default: "7474"
+    required: true
+    secret: false
+  - key: NEO4J_PASSWORD
+    label: Neo4j Password
+    default: "neo4jpass"
+    required: true
+    secret: true
+composeTemplate: |
+  version: "3.8"
+  services:
+    neo4j:
+      image: neo4j:{{NEO4J_VERSION}}
+      environment:
+        - NEO4J_AUTH=neo4j/{{NEO4J_PASSWORD}}
+      ports:
+        - "{{NEO4J_HTTP_PORT}}:7474"
+        - "{{NEO4J_BOLT_PORT}}:7687"
+
+envTemplate: |
+  NEO4J_VERSION={{NEO4J_VERSION}}
+  NEO4J_HTTP_PORT={{NEO4J_HTTP_PORT}}
+  NEO4J_BOLT_PORT={{NEO4J_BOLT_PORT}}
+  NEO4J_PASSWORD={{NEO4J_PASSWORD}}
+readmeTemplate: |
+  # Neo4j (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Browser: http://localhost:{{NEO4J_HTTP_PORT}}

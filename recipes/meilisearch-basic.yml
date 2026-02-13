@@ -1,0 +1,46 @@
+id: meilisearch-basic
+name: Meilisearch (Standalone)
+description: Meilisearch fast search engine.
+tags: ["search", "meilisearch"]
+difficulty: easy
+variables:
+  - key: MEILISEARCH_VERSION
+    label: Meilisearch Version
+    default: "v1.6"
+    required: true
+    secret: false
+    options: ["v1.6", "v1.5"]
+  - key: MEILISEARCH_PORT
+    label: HTTP Port
+    default: "7700"
+    required: true
+    secret: false
+  - key: MEILI_MASTER_KEY
+    label: Master Key
+    default: "masterKey"
+    required: true
+    secret: true
+composeTemplate: |
+  version: "3.8"
+  services:
+    meilisearch:
+      image: getmeili/meilisearch:{{MEILISEARCH_VERSION}}
+      environment:
+        - MEILI_MASTER_KEY={{MEILI_MASTER_KEY}}
+      ports:
+        - "{{MEILISEARCH_PORT}}:7700"
+
+envTemplate: |
+  MEILISEARCH_VERSION={{MEILISEARCH_VERSION}}
+  MEILISEARCH_PORT={{MEILISEARCH_PORT}}
+  MEILI_MASTER_KEY={{MEILI_MASTER_KEY}}
+readmeTemplate: |
+  # Meilisearch (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - API: http://localhost:{{MEILISEARCH_PORT}}

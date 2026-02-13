@@ -1,0 +1,39 @@
+id: dagster-standalone
+name: Dagster (Standalone)
+description: Dagster webserver for orchestration.
+tags: ["dagster", "workflow"]
+difficulty: medium
+variables:
+  - key: DAGSTER_VERSION
+    label: Dagster Version
+    default: "1.6.10"
+    required: true
+    secret: false
+    options: ["1.6.10", "1.6.5"]
+  - key: DAGSTER_PORT
+    label: HTTP Port
+    default: "3000"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    dagster:
+      image: dagster/dagster:{{DAGSTER_VERSION}}
+      command: ["dagster-webserver", "-h", "0.0.0.0", "-p", "{{DAGSTER_PORT}}"]
+      ports:
+        - "{{DAGSTER_PORT}}:{{DAGSTER_PORT}}"
+
+envTemplate: |
+  DAGSTER_VERSION={{DAGSTER_VERSION}}
+  DAGSTER_PORT={{DAGSTER_PORT}}
+readmeTemplate: |
+  # Dagster (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{DAGSTER_PORT}}

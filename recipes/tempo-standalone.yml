@@ -1,0 +1,39 @@
+id: tempo-standalone
+name: Grafana Tempo (Standalone)
+description: Tempo tracing backend.
+tags: ["tempo", "monitoring", "tracing"]
+difficulty: easy
+variables:
+  - key: TEMPO_VERSION
+    label: Tempo Version
+    default: "2.3.1"
+    required: true
+    secret: false
+    options: ["2.3.1", "2.2.2"]
+  - key: TEMPO_PORT
+    label: HTTP Port
+    default: "3200"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    tempo:
+      image: grafana/tempo:{{TEMPO_VERSION}}
+      command: ["-config.file=/etc/tempo.yaml"]
+      ports:
+        - "{{TEMPO_PORT}}:3200"
+
+envTemplate: |
+  TEMPO_VERSION={{TEMPO_VERSION}}
+  TEMPO_PORT={{TEMPO_PORT}}
+readmeTemplate: |
+  # Grafana Tempo (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - API: http://localhost:{{TEMPO_PORT}}

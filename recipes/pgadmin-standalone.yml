@@ -1,0 +1,53 @@
+id: pgadmin-standalone
+name: pgAdmin (Standalone)
+description: pgAdmin UI to manage external Postgres servers.
+tags: ["pgadmin", "db"]
+difficulty: easy
+variables:
+  - key: PGADMIN_VERSION
+    label: pgAdmin Version
+    default: "8.2"
+    required: true
+    secret: false
+    options: ["8.2", "8.1"]
+  - key: PGADMIN_PORT
+    label: HTTP Port
+    default: "8082"
+    required: true
+    secret: false
+  - key: PGADMIN_EMAIL
+    label: Admin Email
+    default: "admin@local"
+    required: true
+    secret: false
+  - key: PGADMIN_PASSWORD
+    label: Admin Password
+    default: "admin"
+    required: true
+    secret: true
+composeTemplate: |
+  version: "3.8"
+  services:
+    pgadmin:
+      image: dpage/pgadmin4:{{PGADMIN_VERSION}}
+      environment:
+        - PGADMIN_DEFAULT_EMAIL={{PGADMIN_EMAIL}}
+        - PGADMIN_DEFAULT_PASSWORD={{PGADMIN_PASSWORD}}
+      ports:
+        - "{{PGADMIN_PORT}}:80"
+
+envTemplate: |
+  PGADMIN_VERSION={{PGADMIN_VERSION}}
+  PGADMIN_PORT={{PGADMIN_PORT}}
+  PGADMIN_EMAIL={{PGADMIN_EMAIL}}
+  PGADMIN_PASSWORD={{PGADMIN_PASSWORD}}
+readmeTemplate: |
+  # pgAdmin (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{PGADMIN_PORT}}

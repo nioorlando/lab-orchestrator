@@ -1,0 +1,52 @@
+id: prometheus-basic
+name: Prometheus (Standalone)
+description: Prometheus server with local config.
+tags: ["prometheus", "monitoring"]
+difficulty: easy
+variables:
+  - key: PROMETHEUS_VERSION
+    label: Prometheus Version
+    default: "v2.49.1"
+    required: true
+    secret: false
+    options: ["v2.49.1", "v2.48.0"]
+  - key: PROMETHEUS_PORT
+    label: Prometheus Port
+    default: "9090"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    prometheus:
+      image: prom/prometheus:{{PROMETHEUS_VERSION}}
+      volumes:
+        - ./prometheus:/etc/prometheus
+      command:
+        - --config.file=/etc/prometheus/prometheus.yml
+      ports:
+        - "{{PROMETHEUS_PORT}}:9090"
+
+extraFiles:
+  - path: prometheus/prometheus.yml
+    content: |
+      global:
+        scrape_interval: 15s
+      scrape_configs:
+        - job_name: "prometheus"
+          static_configs:
+            - targets: ["localhost:9090"]
+
+envTemplate: |
+  PROMETHEUS_VERSION={{PROMETHEUS_VERSION}}
+  PROMETHEUS_PORT={{PROMETHEUS_PORT}}
+readmeTemplate: |
+  # Prometheus (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{PROMETHEUS_PORT}}

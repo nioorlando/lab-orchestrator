@@ -1,0 +1,57 @@
+id: trino-basic
+name: Trino (Standalone)
+description: Trino server with local config and a sample catalog.
+tags: ["trino", "db"]
+difficulty: medium
+variables:
+  - key: TRINO_VERSION
+    label: Trino Version
+    default: "445"
+    required: true
+    secret: false
+    options: ["445", "440"]
+  - key: TRINO_PORT
+    label: Trino Port
+    default: "8088"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    trino:
+      image: trinodb/trino:{{TRINO_VERSION}}
+      ports:
+        - "{{TRINO_PORT}}:8080"
+      volumes:
+        - ./etc:/etc/trino
+
+extraFiles:
+  - path: etc/config.properties
+    content: |
+      coordinator=true
+      node-scheduler.include-coordinator=true
+      http-server.http.port=8080
+      query.max-memory=1GB
+      query.max-memory-per-node=1GB
+      discovery-server.enabled=true
+      discovery.uri=http://localhost:8080
+  - path: etc/jvm.config
+    content: |
+      -Xmx1G
+  - path: etc/catalog/memory.properties
+    content: |
+      connector.name=memory
+
+envTemplate: |
+  TRINO_VERSION={{TRINO_VERSION}}
+  TRINO_PORT={{TRINO_PORT}}
+readmeTemplate: |
+  # Trino (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{TRINO_PORT}}

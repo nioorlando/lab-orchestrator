@@ -1,0 +1,38 @@
+id: hbase-standalone
+name: HBase (Standalone)
+description: Single HBase container for local testing.
+tags: ["hbase", "bigdata"]
+difficulty: medium
+variables:
+  - key: HBASE_VERSION
+    label: HBase Version
+    default: "2.4.17"
+    required: true
+    secret: false
+    options: ["2.4.17"]
+  - key: HBASE_UI_PORT
+    label: HBase UI Port
+    default: "16010"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    hbase:
+      image: harisekhon/hbase:{{HBASE_VERSION}}
+      ports:
+        - "{{HBASE_UI_PORT}}:16010"
+
+envTemplate: |
+  HBASE_VERSION={{HBASE_VERSION}}
+  HBASE_UI_PORT={{HBASE_UI_PORT}}
+readmeTemplate: |
+  # HBase (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{HBASE_UI_PORT}}

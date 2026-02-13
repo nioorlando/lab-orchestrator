@@ -1,0 +1,38 @@
+id: tdengine-basic
+name: TDengine (Standalone)
+description: TDengine time-series database.
+tags: ["tdengine", "db"]
+difficulty: medium
+variables:
+  - key: TDENGINE_VERSION
+    label: TDengine Version
+    default: "3.2.3.0"
+    required: true
+    secret: false
+    options: ["3.2.3.0", "3.1.0.0"]
+  - key: TDENGINE_PORT
+    label: HTTP Port
+    default: "6041"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    tdengine:
+      image: tdengine/tdengine:{{TDENGINE_VERSION}}
+      ports:
+        - "{{TDENGINE_PORT}}:6041"
+
+envTemplate: |
+  TDENGINE_VERSION={{TDENGINE_VERSION}}
+  TDENGINE_PORT={{TDENGINE_PORT}}
+readmeTemplate: |
+  # TDengine (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - HTTP: http://localhost:{{TDENGINE_PORT}}

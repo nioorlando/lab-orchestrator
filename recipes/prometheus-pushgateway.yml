@@ -1,0 +1,38 @@
+id: prometheus-pushgateway
+name: Prometheus Pushgateway
+description: Pushgateway for ephemeral metrics.
+tags: ["prometheus", "monitoring"]
+difficulty: easy
+variables:
+  - key: PUSHGATEWAY_VERSION
+    label: Pushgateway Version
+    default: "v1.7.0"
+    required: true
+    secret: false
+    options: ["v1.7.0", "v1.6.2"]
+  - key: PUSHGATEWAY_PORT
+    label: HTTP Port
+    default: "9091"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    pushgateway:
+      image: prom/pushgateway:{{PUSHGATEWAY_VERSION}}
+      ports:
+        - "{{PUSHGATEWAY_PORT}}:9091"
+
+envTemplate: |
+  PUSHGATEWAY_VERSION={{PUSHGATEWAY_VERSION}}
+  PUSHGATEWAY_PORT={{PUSHGATEWAY_PORT}}
+readmeTemplate: |
+  # Prometheus Pushgateway
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{PUSHGATEWAY_PORT}}

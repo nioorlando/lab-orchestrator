@@ -1,0 +1,38 @@
+id: victoriametrics-basic
+name: VictoriaMetrics (Standalone)
+description: VictoriaMetrics time-series database.
+tags: ["victoriametrics", "monitoring"]
+difficulty: easy
+variables:
+  - key: VM_VERSION
+    label: Version
+    default: "v1.97.1"
+    required: true
+    secret: false
+    options: ["v1.97.1", "v1.96.0"]
+  - key: VM_PORT
+    label: HTTP Port
+    default: "8428"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    victoriametrics:
+      image: victoriametrics/victoria-metrics:{{VM_VERSION}}
+      ports:
+        - "{{VM_PORT}}:8428"
+
+envTemplate: |
+  VM_VERSION={{VM_VERSION}}
+  VM_PORT={{VM_PORT}}
+readmeTemplate: |
+  # VictoriaMetrics (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{VM_PORT}}

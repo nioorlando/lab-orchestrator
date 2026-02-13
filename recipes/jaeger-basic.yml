@@ -1,0 +1,39 @@
+id: jaeger-basic
+name: Jaeger (Standalone)
+description: Jaeger all-in-one for tracing UI.
+tags: ["jaeger", "monitoring", "tracing"]
+difficulty: easy
+variables:
+  - key: JAEGER_VERSION
+    label: Jaeger Version
+    default: "1.56"
+    required: true
+    secret: false
+    options: ["1.56", "1.55"]
+  - key: JAEGER_UI_PORT
+    label: Jaeger UI Port
+    default: "16686"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    jaeger:
+      image: jaegertracing/all-in-one:{{JAEGER_VERSION}}
+      ports:
+        - "{{JAEGER_UI_PORT}}:16686"
+        - "14250:14250"
+
+envTemplate: |
+  JAEGER_VERSION={{JAEGER_VERSION}}
+  JAEGER_UI_PORT={{JAEGER_UI_PORT}}
+readmeTemplate: |
+  # Jaeger (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{JAEGER_UI_PORT}}

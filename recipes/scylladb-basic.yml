@@ -1,0 +1,38 @@
+id: scylladb-basic
+name: ScyllaDB (Standalone)
+description: ScyllaDB single node for high-performance NoSQL.
+tags: ["scylladb", "db"]
+difficulty: medium
+variables:
+  - key: SCYLLA_VERSION
+    label: ScyllaDB Version
+    default: "5.4"
+    required: true
+    secret: false
+    options: ["5.4", "5.2"]
+  - key: SCYLLA_PORT
+    label: CQL Port
+    default: "9042"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    scylla:
+      image: scylladb/scylla:{{SCYLLA_VERSION}}
+      ports:
+        - "{{SCYLLA_PORT}}:9042"
+
+envTemplate: |
+  SCYLLA_VERSION={{SCYLLA_VERSION}}
+  SCYLLA_PORT={{SCYLLA_PORT}}
+readmeTemplate: |
+  # ScyllaDB (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - CQL: {{SCYLLA_PORT}}

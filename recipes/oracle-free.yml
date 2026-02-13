@@ -1,0 +1,47 @@
+id: oracle-free
+name: Oracle Database Free (Standalone)
+description: Oracle Free database for local dev and learning.
+tags: ["oracle", "db"]
+difficulty: medium
+variables:
+  - key: ORACLE_VERSION
+    label: Oracle Image Version
+    default: "23.2-slim"
+    required: true
+    secret: false
+    options: ["23.2-slim", "23.2-full"]
+  - key: ORACLE_PORT
+    label: Oracle Port
+    default: "1521"
+    required: true
+    secret: false
+  - key: ORACLE_PASSWORD
+    label: Oracle Password
+    default: "oracle"
+    required: true
+    secret: true
+composeTemplate: |
+  version: "3.8"
+  services:
+    oracle:
+      image: gvenzl/oracle-free:{{ORACLE_VERSION}}
+      environment:
+        - ORACLE_PASSWORD={{ORACLE_PASSWORD}}
+      ports:
+        - "{{ORACLE_PORT}}:1521"
+
+envTemplate: |
+  ORACLE_VERSION={{ORACLE_VERSION}}
+  ORACLE_PORT={{ORACLE_PORT}}
+  ORACLE_PASSWORD={{ORACLE_PASSWORD}}
+readmeTemplate: |
+  # Oracle Database Free (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Port: {{ORACLE_PORT}}
+  - Default user: system

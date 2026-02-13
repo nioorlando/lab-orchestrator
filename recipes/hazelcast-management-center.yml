@@ -1,0 +1,38 @@
+id: hazelcast-management-center
+name: Hazelcast Management Center
+description: Hazelcast Management Center UI.
+tags: ["hazelcast", "monitoring"]
+difficulty: easy
+variables:
+  - key: HZ_MC_VERSION
+    label: Management Center Version
+    default: "5.3.3"
+    required: true
+    secret: false
+    options: ["5.3.3", "5.2.2"]
+  - key: HZ_MC_PORT
+    label: HTTP Port
+    default: "8080"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    hazelcast-mc:
+      image: hazelcast/management-center:{{HZ_MC_VERSION}}
+      ports:
+        - "{{HZ_MC_PORT}}:8080"
+
+envTemplate: |
+  HZ_MC_VERSION={{HZ_MC_VERSION}}
+  HZ_MC_PORT={{HZ_MC_PORT}}
+readmeTemplate: |
+  # Hazelcast Management Center
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{HZ_MC_PORT}}

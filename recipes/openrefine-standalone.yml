@@ -1,0 +1,38 @@
+id: openrefine-standalone
+name: OpenRefine (Standalone)
+description: OpenRefine for data cleaning.
+tags: ["openrefine", "analytics"]
+difficulty: easy
+variables:
+  - key: OPENREFINE_VERSION
+    label: OpenRefine Version
+    default: "3.8.2"
+    required: true
+    secret: false
+    options: ["3.8.2", "3.7.7"]
+  - key: OPENREFINE_PORT
+    label: HTTP Port
+    default: "3333"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    openrefine:
+      image: openrefine/openrefine:{{OPENREFINE_VERSION}}
+      ports:
+        - "{{OPENREFINE_PORT}}:3333"
+
+envTemplate: |
+  OPENREFINE_VERSION={{OPENREFINE_VERSION}}
+  OPENREFINE_PORT={{OPENREFINE_PORT}}
+readmeTemplate: |
+  # OpenRefine (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{OPENREFINE_PORT}}

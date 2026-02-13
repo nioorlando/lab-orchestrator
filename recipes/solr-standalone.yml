@@ -1,0 +1,38 @@
+id: solr-standalone
+name: Apache Solr (Standalone)
+description: Solr search server.
+tags: ["solr", "search", "bigdata"]
+difficulty: easy
+variables:
+  - key: SOLR_VERSION
+    label: Solr Version
+    default: "9.5"
+    required: true
+    secret: false
+    options: ["9.5", "9.4"]
+  - key: SOLR_PORT
+    label: HTTP Port
+    default: "8983"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    solr:
+      image: solr:{{SOLR_VERSION}}
+      ports:
+        - "{{SOLR_PORT}}:8983"
+
+envTemplate: |
+  SOLR_VERSION={{SOLR_VERSION}}
+  SOLR_PORT={{SOLR_PORT}}
+readmeTemplate: |
+  # Apache Solr (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{SOLR_PORT}}

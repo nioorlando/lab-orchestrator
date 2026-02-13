@@ -1,0 +1,40 @@
+id: hadoop-namenode
+name: Hadoop NameNode (Standalone)
+description: Hadoop HDFS NameNode single container for dev.
+tags: ["hadoop", "bigdata"]
+difficulty: medium
+variables:
+  - key: HADOOP_VERSION
+    label: Hadoop Version
+    default: "3.3.6"
+    required: true
+    secret: false
+    options: ["3.3.6", "3.3.4"]
+  - key: NAMENODE_UI_PORT
+    label: NameNode UI Port
+    default: "9870"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    namenode:
+      image: bde2020/hadoop-namenode:{{HADOOP_VERSION}}
+      environment:
+        - CLUSTER_NAME=lab
+      ports:
+        - "{{NAMENODE_UI_PORT}}:9870"
+
+envTemplate: |
+  HADOOP_VERSION={{HADOOP_VERSION}}
+  NAMENODE_UI_PORT={{NAMENODE_UI_PORT}}
+readmeTemplate: |
+  # Hadoop NameNode (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{NAMENODE_UI_PORT}}

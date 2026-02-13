@@ -1,0 +1,45 @@
+id: grafana-agent
+name: Grafana Agent (Standalone)
+description: Grafana Agent for metrics/logs forwarding.
+tags: ["grafana", "monitoring"]
+difficulty: easy
+variables:
+  - key: AGENT_VERSION
+    label: Agent Version
+    default: "v0.38.0"
+    required: true
+    secret: false
+    options: ["v0.38.0", "v0.37.0"]
+  - key: AGENT_PORT
+    label: HTTP Port
+    default: "12345"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    grafana-agent:
+      image: grafana/agent:{{AGENT_VERSION}}
+      command: ["-config.file=/etc/agent/agent.yaml"]
+      ports:
+        - "{{AGENT_PORT}}:12345"
+
+extraFiles:
+  - path: agent/agent.yaml
+    content: |
+      server:
+        http_listen_port: 12345
+
+envTemplate: |
+  AGENT_VERSION={{AGENT_VERSION}}
+  AGENT_PORT={{AGENT_PORT}}
+readmeTemplate: |
+  # Grafana Agent (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - HTTP: http://localhost:{{AGENT_PORT}}

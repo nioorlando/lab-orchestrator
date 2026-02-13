@@ -1,0 +1,39 @@
+id: dask-scheduler
+name: Dask Scheduler (Standalone)
+description: Dask scheduler + dashboard.
+tags: ["dask", "bigdata", "compute"]
+difficulty: easy
+variables:
+  - key: DASK_VERSION
+    label: Dask Version
+    default: "2024.2.1"
+    required: true
+    secret: false
+    options: ["2024.2.1", "2023.12.1"]
+  - key: DASK_DASHBOARD_PORT
+    label: Dashboard Port
+    default: "8787"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    dask:
+      image: daskdev/dask:{{DASK_VERSION}}
+      command: ["dask-scheduler"]
+      ports:
+        - "{{DASK_DASHBOARD_PORT}}:8787"
+
+envTemplate: |
+  DASK_VERSION={{DASK_VERSION}}
+  DASK_DASHBOARD_PORT={{DASK_DASHBOARD_PORT}}
+readmeTemplate: |
+  # Dask Scheduler (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Dashboard: http://localhost:{{DASK_DASHBOARD_PORT}}

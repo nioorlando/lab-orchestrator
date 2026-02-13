@@ -1,0 +1,38 @@
+id: cassandra-basic
+name: Cassandra (Standalone)
+description: Single-node Apache Cassandra for local testing.
+tags: ["cassandra", "db"]
+difficulty: medium
+variables:
+  - key: CASSANDRA_VERSION
+    label: Cassandra Version
+    default: "4.1"
+    required: true
+    secret: false
+    options: ["4.1", "4.0"]
+  - key: CASSANDRA_PORT
+    label: CQL Port
+    default: "9042"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    cassandra:
+      image: cassandra:{{CASSANDRA_VERSION}}
+      ports:
+        - "{{CASSANDRA_PORT}}:9042"
+
+envTemplate: |
+  CASSANDRA_VERSION={{CASSANDRA_VERSION}}
+  CASSANDRA_PORT={{CASSANDRA_PORT}}
+readmeTemplate: |
+  # Cassandra (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - CQL: {{CASSANDRA_PORT}}

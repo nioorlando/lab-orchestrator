@@ -1,0 +1,39 @@
+id: apache-tika
+name: Apache Tika Server
+description: Tika server for content extraction.
+tags: ["tika", "bigdata"]
+difficulty: easy
+variables:
+  - key: TIKA_VERSION
+    label: Tika Version
+    default: "2.9.1"
+    required: true
+    secret: false
+    options: ["2.9.1", "2.8.0"]
+  - key: TIKA_PORT
+    label: HTTP Port
+    default: "9998"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    tika:
+      image: apache/tika:{{TIKA_VERSION}}
+      command: ["tika", "-s", "-p", "{{TIKA_PORT}}"]
+      ports:
+        - "{{TIKA_PORT}}:{{TIKA_PORT}}"
+
+envTemplate: |
+  TIKA_VERSION={{TIKA_VERSION}}
+  TIKA_PORT={{TIKA_PORT}}
+readmeTemplate: |
+  # Apache Tika Server
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - API: http://localhost:{{TIKA_PORT}}

@@ -1,0 +1,47 @@
+id: cockroachdb-basic
+name: CockroachDB (Single Node)
+description: Single-node CockroachDB for local development.
+tags: ["cockroachdb", "db"]
+difficulty: medium
+variables:
+  - key: CRDB_VERSION
+    label: CockroachDB Version
+    default: "v23.2.5"
+    required: true
+    secret: false
+    options: ["v23.2.5", "v23.1.11"]
+  - key: CRDB_PORT
+    label: SQL Port
+    default: "26257"
+    required: true
+    secret: false
+  - key: CRDB_UI_PORT
+    label: Admin UI Port
+    default: "8080"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    cockroachdb:
+      image: cockroachdb/cockroach:{{CRDB_VERSION}}
+      command: start-single-node --insecure
+      ports:
+        - "{{CRDB_PORT}}:26257"
+        - "{{CRDB_UI_PORT}}:8080"
+
+envTemplate: |
+  CRDB_VERSION={{CRDB_VERSION}}
+  CRDB_PORT={{CRDB_PORT}}
+  CRDB_UI_PORT={{CRDB_UI_PORT}}
+readmeTemplate: |
+  # CockroachDB (Single Node)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - SQL: {{CRDB_PORT}}
+  - UI: http://localhost:{{CRDB_UI_PORT}}

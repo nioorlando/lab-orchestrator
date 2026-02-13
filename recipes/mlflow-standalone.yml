@@ -1,0 +1,39 @@
+id: mlflow-standalone
+name: MLflow (Standalone)
+description: MLflow tracking server using local backend store.
+tags: ["mlflow", "analytics", "ml"]
+difficulty: medium
+variables:
+  - key: MLFLOW_VERSION
+    label: MLflow Version
+    default: "2.10.0"
+    required: true
+    secret: false
+    options: ["2.10.0", "2.9.2"]
+  - key: MLFLOW_PORT
+    label: HTTP Port
+    default: "5000"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    mlflow:
+      image: ghcr.io/mlflow/mlflow:v{{MLFLOW_VERSION}}
+      command: ["mlflow", "server", "--host", "0.0.0.0", "--port", "{{MLFLOW_PORT}}", "--backend-store-uri", "sqlite:///mlflow.db", "--default-artifact-root", "/tmp/mlruns"]
+      ports:
+        - "{{MLFLOW_PORT}}:{{MLFLOW_PORT}}"
+
+envTemplate: |
+  MLFLOW_VERSION={{MLFLOW_VERSION}}
+  MLFLOW_PORT={{MLFLOW_PORT}}
+readmeTemplate: |
+  # MLflow (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{MLFLOW_PORT}}

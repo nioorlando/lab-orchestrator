@@ -1,0 +1,69 @@
+id: otel-collector-basic
+name: OpenTelemetry Collector (Standalone)
+description: OpenTelemetry Collector running with a basic config.
+tags: ["otel", "monitoring", "tracing"]
+difficulty: easy
+variables:
+  - key: OTEL_COLLECTOR_VERSION
+    label: Collector Version
+    default: "0.95.0"
+    required: true
+    secret: false
+    options: ["0.95.0", "0.94.0"]
+  - key: OTEL_GRPC_PORT
+    label: OTEL gRPC Port
+    default: "4317"
+    required: true
+    secret: false
+  - key: OTEL_HTTP_PORT
+    label: OTEL HTTP Port
+    default: "4318"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    otel-collector:
+      image: otel/opentelemetry-collector-contrib:{{OTEL_COLLECTOR_VERSION}}
+      volumes:
+        - ./otel:/etc/otel
+      command: ["--config=/etc/otel/collector-config.yaml"]
+      ports:
+        - "{{OTEL_GRPC_PORT}}:4317"
+        - "{{OTEL_HTTP_PORT}}:4318"
+
+extraFiles:
+  - path: otel/collector-config.yaml
+    content: |
+      receivers:
+        otlp:
+          protocols:
+            grpc:
+            http:
+      processors:
+        batch:
+      exporters:
+        logging:
+          loglevel: debug
+      service:
+        pipelines:
+          traces:
+            receivers: [otlp]
+            processors: [batch]
+            exporters: [logging]
+
+envTemplate: |
+  OTEL_COLLECTOR_VERSION={{OTEL_COLLECTOR_VERSION}}
+  OTEL_GRPC_PORT={{OTEL_GRPC_PORT}}
+  OTEL_HTTP_PORT={{OTEL_HTTP_PORT}}
+readmeTemplate: |
+  # OpenTelemetry Collector (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Ports
+  - gRPC: {{OTEL_GRPC_PORT}}
+  - HTTP: {{OTEL_HTTP_PORT}}

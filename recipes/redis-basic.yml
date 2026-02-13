@@ -1,0 +1,39 @@
+id: redis-basic
+name: Redis (Standalone)
+description: Single Redis instance for caching and queues.
+tags: ["redis", "db"]
+difficulty: easy
+variables:
+  - key: REDIS_VERSION
+    label: Redis Version
+    default: "7"
+    required: true
+    secret: false
+    options: ["7", "6"]
+  - key: REDIS_PORT
+    label: Redis Port
+    default: "6379"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    redis:
+      image: redis:{{REDIS_VERSION}}
+      ports:
+        - "{{REDIS_PORT}}:6379"
+
+envTemplate: |
+  REDIS_VERSION={{REDIS_VERSION}}
+  REDIS_PORT={{REDIS_PORT}}
+readmeTemplate: |
+  # Redis (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Host: localhost
+  - Port: {{REDIS_PORT}}

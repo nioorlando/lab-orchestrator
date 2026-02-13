@@ -1,0 +1,38 @@
+id: redisinsight-standalone
+name: RedisInsight (Standalone)
+description: RedisInsight UI without bundled Redis.
+tags: ["redis", "ui"]
+difficulty: easy
+variables:
+  - key: REDISINSIGHT_VERSION
+    label: RedisInsight Version
+    default: "2.50.0"
+    required: true
+    secret: false
+    options: ["2.50.0", "2.44.0"]
+  - key: REDISINSIGHT_PORT
+    label: HTTP Port
+    default: "8001"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    redisinsight:
+      image: redis/redisinsight:{{REDISINSIGHT_VERSION}}
+      ports:
+        - "{{REDISINSIGHT_PORT}}:8001"
+
+envTemplate: |
+  REDISINSIGHT_VERSION={{REDISINSIGHT_VERSION}}
+  REDISINSIGHT_PORT={{REDISINSIGHT_PORT}}
+readmeTemplate: |
+  # RedisInsight (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{REDISINSIGHT_PORT}}

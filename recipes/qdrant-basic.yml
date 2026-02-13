@@ -1,0 +1,38 @@
+id: qdrant-basic
+name: Qdrant (Standalone)
+description: Qdrant vector database with REST API.
+tags: ["qdrant", "vector", "db"]
+difficulty: easy
+variables:
+  - key: QDRANT_VERSION
+    label: Qdrant Version
+    default: "1.7.4"
+    required: true
+    secret: false
+    options: ["1.7.4", "1.6.1"]
+  - key: QDRANT_PORT
+    label: HTTP Port
+    default: "6333"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    qdrant:
+      image: qdrant/qdrant:{{QDRANT_VERSION}}
+      ports:
+        - "{{QDRANT_PORT}}:6333"
+
+envTemplate: |
+  QDRANT_VERSION={{QDRANT_VERSION}}
+  QDRANT_PORT={{QDRANT_PORT}}
+readmeTemplate: |
+  # Qdrant (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - API: http://localhost:{{QDRANT_PORT}}

@@ -1,0 +1,41 @@
+id: localstack-basic
+name: LocalStack (Standalone)
+description: Local AWS services emulator (single container).
+tags: ["localstack", "aws"]
+difficulty: medium
+variables:
+  - key: LOCALSTACK_VERSION
+    label: LocalStack Version
+    default: "3.0"
+    required: true
+    secret: false
+    options: ["3.0", "2.3"]
+  - key: LOCALSTACK_PORT
+    label: Edge Port
+    default: "4566"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    localstack:
+      image: localstack/localstack:{{LOCALSTACK_VERSION}}
+      environment:
+        - SERVICES=s3,sqs,lambda,iam,sts
+        - DEBUG=0
+      ports:
+        - "{{LOCALSTACK_PORT}}:4566"
+
+envTemplate: |
+  LOCALSTACK_VERSION={{LOCALSTACK_VERSION}}
+  LOCALSTACK_PORT={{LOCALSTACK_PORT}}
+readmeTemplate: |
+  # LocalStack (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Edge: http://localhost:{{LOCALSTACK_PORT}}

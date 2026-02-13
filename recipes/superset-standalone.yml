@@ -1,0 +1,38 @@
+id: superset-standalone
+name: Apache Superset (Standalone)
+description: Superset analytics UI in a single container.
+tags: ["superset", "analytics"]
+difficulty: medium
+variables:
+  - key: SUPERSET_VERSION
+    label: Superset Version
+    default: "3.1.0"
+    required: true
+    secret: false
+    options: ["3.1.0", "3.0.3"]
+  - key: SUPERSET_PORT
+    label: HTTP Port
+    default: "8088"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    superset:
+      image: apache/superset:{{SUPERSET_VERSION}}
+      ports:
+        - "{{SUPERSET_PORT}}:8088"
+
+envTemplate: |
+  SUPERSET_VERSION={{SUPERSET_VERSION}}
+  SUPERSET_PORT={{SUPERSET_PORT}}
+readmeTemplate: |
+  # Apache Superset (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{SUPERSET_PORT}}

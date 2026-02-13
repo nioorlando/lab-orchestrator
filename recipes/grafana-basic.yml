@@ -1,0 +1,38 @@
+id: grafana-basic
+name: Grafana (Standalone)
+description: Grafana UI for dashboards and visualization.
+tags: ["grafana", "monitoring"]
+difficulty: easy
+variables:
+  - key: GRAFANA_VERSION
+    label: Grafana Version
+    default: "10.3.1"
+    required: true
+    secret: false
+    options: ["10.3.1", "10.2.0"]
+  - key: GRAFANA_PORT
+    label: Grafana Port
+    default: "3000"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    grafana:
+      image: grafana/grafana:{{GRAFANA_VERSION}}
+      ports:
+        - "{{GRAFANA_PORT}}:3000"
+
+envTemplate: |
+  GRAFANA_VERSION={{GRAFANA_VERSION}}
+  GRAFANA_PORT={{GRAFANA_PORT}}
+readmeTemplate: |
+  # Grafana (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{GRAFANA_PORT}}

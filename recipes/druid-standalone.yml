@@ -1,0 +1,39 @@
+id: druid-standalone
+name: Apache Druid (Standalone)
+description: Druid single container (for quick testing).
+tags: ["druid", "bigdata"]
+difficulty: medium
+variables:
+  - key: DRUID_VERSION
+    label: Druid Version
+    default: "25.0.0"
+    required: true
+    secret: false
+    options: ["25.0.0", "24.0.2"]
+  - key: DRUID_PORT
+    label: HTTP Port
+    default: "8888"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    druid:
+      image: apache/druid:{{DRUID_VERSION}}
+      command: ["start-micro-quickstart"]
+      ports:
+        - "{{DRUID_PORT}}:8888"
+
+envTemplate: |
+  DRUID_VERSION={{DRUID_VERSION}}
+  DRUID_PORT={{DRUID_PORT}}
+readmeTemplate: |
+  # Apache Druid (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{DRUID_PORT}}

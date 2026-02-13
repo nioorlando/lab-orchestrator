@@ -1,0 +1,54 @@
+id: keycloak-standalone
+name: Keycloak (Standalone Dev)
+description: Keycloak dev mode using embedded database.
+tags: ["keycloak", "auth"]
+difficulty: medium
+variables:
+  - key: KEYCLOAK_VERSION
+    label: Keycloak Version
+    default: "24.0.2"
+    required: true
+    secret: false
+    options: ["24.0.2", "23.0.7"]
+  - key: KEYCLOAK_PORT
+    label: HTTP Port
+    default: "8080"
+    required: true
+    secret: false
+  - key: KEYCLOAK_ADMIN
+    label: Admin User
+    default: "admin"
+    required: true
+    secret: false
+  - key: KEYCLOAK_ADMIN_PASSWORD
+    label: Admin Password
+    default: "admin"
+    required: true
+    secret: true
+composeTemplate: |
+  version: "3.8"
+  services:
+    keycloak:
+      image: quay.io/keycloak/keycloak:{{KEYCLOAK_VERSION}}
+      command: ["start-dev"]
+      environment:
+        - KEYCLOAK_ADMIN={{KEYCLOAK_ADMIN}}
+        - KEYCLOAK_ADMIN_PASSWORD={{KEYCLOAK_ADMIN_PASSWORD}}
+      ports:
+        - "{{KEYCLOAK_PORT}}:8080"
+
+envTemplate: |
+  KEYCLOAK_VERSION={{KEYCLOAK_VERSION}}
+  KEYCLOAK_PORT={{KEYCLOAK_PORT}}
+  KEYCLOAK_ADMIN={{KEYCLOAK_ADMIN}}
+  KEYCLOAK_ADMIN_PASSWORD={{KEYCLOAK_ADMIN_PASSWORD}}
+readmeTemplate: |
+  # Keycloak (Standalone Dev)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{KEYCLOAK_PORT}}

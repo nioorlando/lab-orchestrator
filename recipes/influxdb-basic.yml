@@ -1,0 +1,68 @@
+id: influxdb-basic
+name: InfluxDB (Standalone)
+description: InfluxDB time-series database with built-in UI.
+tags: ["influxdb", "db"]
+difficulty: easy
+variables:
+  - key: INFLUXDB_VERSION
+    label: InfluxDB Version
+    default: "2.7"
+    required: true
+    secret: false
+    options: ["2.7", "2.6"]
+  - key: INFLUXDB_PORT
+    label: HTTP Port
+    default: "8086"
+    required: true
+    secret: false
+  - key: INFLUXDB_ADMIN_USER
+    label: Admin User
+    default: "admin"
+    required: true
+    secret: false
+  - key: INFLUXDB_ADMIN_PASSWORD
+    label: Admin Password
+    default: "adminpass"
+    required: true
+    secret: true
+  - key: INFLUXDB_ORG
+    label: Org
+    default: "lab"
+    required: true
+    secret: false
+  - key: INFLUXDB_BUCKET
+    label: Bucket
+    default: "lab"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    influxdb:
+      image: influxdb:{{INFLUXDB_VERSION}}
+      ports:
+        - "{{INFLUXDB_PORT}}:8086"
+      environment:
+        - DOCKER_INFLUXDB_INIT_MODE=setup
+        - DOCKER_INFLUXDB_INIT_USERNAME={{INFLUXDB_ADMIN_USER}}
+        - DOCKER_INFLUXDB_INIT_PASSWORD={{INFLUXDB_ADMIN_PASSWORD}}
+        - DOCKER_INFLUXDB_INIT_ORG={{INFLUXDB_ORG}}
+        - DOCKER_INFLUXDB_INIT_BUCKET={{INFLUXDB_BUCKET}}
+
+envTemplate: |
+  INFLUXDB_VERSION={{INFLUXDB_VERSION}}
+  INFLUXDB_PORT={{INFLUXDB_PORT}}
+  INFLUXDB_ADMIN_USER={{INFLUXDB_ADMIN_USER}}
+  INFLUXDB_ADMIN_PASSWORD={{INFLUXDB_ADMIN_PASSWORD}}
+  INFLUXDB_ORG={{INFLUXDB_ORG}}
+  INFLUXDB_BUCKET={{INFLUXDB_BUCKET}}
+readmeTemplate: |
+  # InfluxDB (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{INFLUXDB_PORT}}

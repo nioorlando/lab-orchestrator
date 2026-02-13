@@ -1,0 +1,45 @@
+id: typesense-basic
+name: Typesense (Standalone)
+description: Typesense search server.
+tags: ["search", "typesense"]
+difficulty: easy
+variables:
+  - key: TYPESENSE_VERSION
+    label: Typesense Version
+    default: "0.25.2"
+    required: true
+    secret: false
+    options: ["0.25.2", "0.24.1"]
+  - key: TYPESENSE_PORT
+    label: HTTP Port
+    default: "8108"
+    required: true
+    secret: false
+  - key: TYPESENSE_API_KEY
+    label: API Key
+    default: "typesensekey"
+    required: true
+    secret: true
+composeTemplate: |
+  version: "3.8"
+  services:
+    typesense:
+      image: typesense/typesense:{{TYPESENSE_VERSION}}
+      command: ["--data-dir", "/data", "--api-key={{TYPESENSE_API_KEY}}", "--listen-port=8108"]
+      ports:
+        - "{{TYPESENSE_PORT}}:8108"
+
+envTemplate: |
+  TYPESENSE_VERSION={{TYPESENSE_VERSION}}
+  TYPESENSE_PORT={{TYPESENSE_PORT}}
+  TYPESENSE_API_KEY={{TYPESENSE_API_KEY}}
+readmeTemplate: |
+  # Typesense (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - API: http://localhost:{{TYPESENSE_PORT}}

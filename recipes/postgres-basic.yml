@@ -1,0 +1,55 @@
+id: postgres-basic
+name: PostgreSQL (Standalone)
+description: Single Postgres instance for local development.
+tags: ["postgres", "db"]
+difficulty: easy
+variables:
+  - key: POSTGRES_VERSION
+    label: Postgres Version
+    default: "16"
+    required: true
+    secret: false
+    options: ["16", "15"]
+  - key: POSTGRES_PORT
+    label: Postgres Port
+    default: "5432"
+    required: true
+    secret: false
+  - key: POSTGRES_PASSWORD
+    label: Postgres Password
+    default: "postgres"
+    required: true
+    secret: true
+  - key: POSTGRES_DB
+    label: Postgres Database
+    default: "lab"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    postgres:
+      image: postgres:{{POSTGRES_VERSION}}
+      environment:
+        - POSTGRES_PASSWORD={{POSTGRES_PASSWORD}}
+        - POSTGRES_DB={{POSTGRES_DB}}
+      ports:
+        - "{{POSTGRES_PORT}}:5432"
+
+envTemplate: |
+  POSTGRES_VERSION={{POSTGRES_VERSION}}
+  POSTGRES_PORT={{POSTGRES_PORT}}
+  POSTGRES_PASSWORD={{POSTGRES_PASSWORD}}
+  POSTGRES_DB={{POSTGRES_DB}}
+readmeTemplate: |
+  # PostgreSQL (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Host: localhost
+  - Port: {{POSTGRES_PORT}}
+  - DB: {{POSTGRES_DB}}

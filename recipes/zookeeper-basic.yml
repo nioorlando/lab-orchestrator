@@ -1,0 +1,40 @@
+id: zookeeper-basic
+name: Zookeeper (Standalone)
+description: Single Zookeeper instance for coordination demos.
+tags: ["zookeeper", "coordination"]
+difficulty: easy
+variables:
+  - key: ZK_VERSION
+    label: Zookeeper Version
+    default: "3.9"
+    required: true
+    secret: false
+    options: ["3.9", "3.8"]
+  - key: ZK_PORT
+    label: Zookeeper Port
+    default: "2181"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    zookeeper:
+      image: bitnami/zookeeper:{{ZK_VERSION}}
+      environment:
+        - ALLOW_ANONYMOUS_LOGIN=yes
+      ports:
+        - "{{ZK_PORT}}:2181"
+
+envTemplate: |
+  ZK_VERSION={{ZK_VERSION}}
+  ZK_PORT={{ZK_PORT}}
+readmeTemplate: |
+  # Zookeeper (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - Port: {{ZK_PORT}}

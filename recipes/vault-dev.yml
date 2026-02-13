@@ -1,0 +1,50 @@
+id: vault-dev
+name: Vault (Dev Mode)
+description: HashiCorp Vault running in dev mode.
+tags: ["vault", "secrets"]
+difficulty: medium
+variables:
+  - key: VAULT_VERSION
+    label: Vault Version
+    default: "1.15.6"
+    required: true
+    secret: false
+    options: ["1.15.6", "1.14.8"]
+  - key: VAULT_PORT
+    label: HTTP Port
+    default: "8200"
+    required: true
+    secret: false
+  - key: VAULT_DEV_ROOT_TOKEN
+    label: Root Token
+    default: "root"
+    required: true
+    secret: true
+composeTemplate: |
+  version: "3.8"
+  services:
+    vault:
+      image: hashicorp/vault:{{VAULT_VERSION}}
+      cap_add:
+        - IPC_LOCK
+      environment:
+        - VAULT_DEV_ROOT_TOKEN_ID={{VAULT_DEV_ROOT_TOKEN}}
+      command: ["server", "-dev", "-dev-root-token-id={{VAULT_DEV_ROOT_TOKEN}}"]
+      ports:
+        - "{{VAULT_PORT}}:8200"
+
+envTemplate: |
+  VAULT_VERSION={{VAULT_VERSION}}
+  VAULT_PORT={{VAULT_PORT}}
+  VAULT_DEV_ROOT_TOKEN={{VAULT_DEV_ROOT_TOKEN}}
+readmeTemplate: |
+  # Vault (Dev Mode)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{VAULT_PORT}}
+  - Token: {{VAULT_DEV_ROOT_TOKEN}}

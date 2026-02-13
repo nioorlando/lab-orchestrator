@@ -1,0 +1,38 @@
+id: adminer-basic
+name: Adminer (Standalone)
+description: Adminer database UI (connect to external DBs).
+tags: ["adminer", "db"]
+difficulty: easy
+variables:
+  - key: ADMINER_VERSION
+    label: Adminer Version
+    default: "4.8.1"
+    required: true
+    secret: false
+    options: ["4.8.1"]
+  - key: ADMINER_PORT
+    label: HTTP Port
+    default: "8080"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    adminer:
+      image: adminer:{{ADMINER_VERSION}}
+      ports:
+        - "{{ADMINER_PORT}}:8080"
+
+envTemplate: |
+  ADMINER_VERSION={{ADMINER_VERSION}}
+  ADMINER_PORT={{ADMINER_PORT}}
+readmeTemplate: |
+  # Adminer (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{ADMINER_PORT}}

@@ -1,0 +1,38 @@
+id: tidb-standalone
+name: TiDB (Standalone)
+description: TiDB single server for MySQL-compatible SQL.
+tags: ["tidb", "db"]
+difficulty: medium
+variables:
+  - key: TIDB_VERSION
+    label: TiDB Version
+    default: "v7.5.2"
+    required: true
+    secret: false
+    options: ["v7.5.2", "v7.1.2"]
+  - key: TIDB_PORT
+    label: MySQL Port
+    default: "4000"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    tidb:
+      image: pingcap/tidb:{{TIDB_VERSION}}
+      ports:
+        - "{{TIDB_PORT}}:4000"
+
+envTemplate: |
+  TIDB_VERSION={{TIDB_VERSION}}
+  TIDB_PORT={{TIDB_PORT}}
+readmeTemplate: |
+  # TiDB (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - MySQL: {{TIDB_PORT}}

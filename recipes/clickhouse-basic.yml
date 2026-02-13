@@ -1,0 +1,46 @@
+id: clickhouse-basic
+name: ClickHouse (Standalone)
+description: ClickHouse OLAP database with HTTP interface.
+tags: ["clickhouse", "db"]
+difficulty: medium
+variables:
+  - key: CLICKHOUSE_VERSION
+    label: ClickHouse Version
+    default: "24.1"
+    required: true
+    secret: false
+    options: ["24.1", "23.12"]
+  - key: CLICKHOUSE_HTTP_PORT
+    label: HTTP Port
+    default: "8123"
+    required: true
+    secret: false
+  - key: CLICKHOUSE_NATIVE_PORT
+    label: Native Port
+    default: "9000"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    clickhouse:
+      image: clickhouse/clickhouse-server:{{CLICKHOUSE_VERSION}}
+      ports:
+        - "{{CLICKHOUSE_HTTP_PORT}}:8123"
+        - "{{CLICKHOUSE_NATIVE_PORT}}:9000"
+
+envTemplate: |
+  CLICKHOUSE_VERSION={{CLICKHOUSE_VERSION}}
+  CLICKHOUSE_HTTP_PORT={{CLICKHOUSE_HTTP_PORT}}
+  CLICKHOUSE_NATIVE_PORT={{CLICKHOUSE_NATIVE_PORT}}
+readmeTemplate: |
+  # ClickHouse (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - HTTP: http://localhost:{{CLICKHOUSE_HTTP_PORT}}
+  - Native: {{CLICKHOUSE_NATIVE_PORT}}

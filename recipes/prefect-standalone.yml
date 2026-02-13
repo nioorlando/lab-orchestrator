@@ -1,0 +1,39 @@
+id: prefect-standalone
+name: Prefect Server (Standalone)
+description: Prefect server for orchestration.
+tags: ["prefect", "workflow"]
+difficulty: medium
+variables:
+  - key: PREFECT_VERSION
+    label: Prefect Version
+    default: "2.16.6"
+    required: true
+    secret: false
+    options: ["2.16.6", "2.14.7"]
+  - key: PREFECT_PORT
+    label: HTTP Port
+    default: "4200"
+    required: true
+    secret: false
+composeTemplate: |
+  version: "3.8"
+  services:
+    prefect:
+      image: prefecthq/prefect:{{PREFECT_VERSION}}
+      command: ["prefect", "server", "start", "--host", "0.0.0.0", "--port", "{{PREFECT_PORT}}"]
+      ports:
+        - "{{PREFECT_PORT}}:{{PREFECT_PORT}}"
+
+envTemplate: |
+  PREFECT_VERSION={{PREFECT_VERSION}}
+  PREFECT_PORT={{PREFECT_PORT}}
+readmeTemplate: |
+  # Prefect Server (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{PREFECT_PORT}}

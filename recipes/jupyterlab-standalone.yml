@@ -1,0 +1,46 @@
+id: jupyterlab-standalone
+name: JupyterLab (Standalone)
+description: JupyterLab notebook server.
+tags: ["jupyter", "analytics", "bigdata"]
+difficulty: easy
+variables:
+  - key: JUPYTER_VERSION
+    label: JupyterLab Version
+    default: "4.1.5"
+    required: true
+    secret: false
+    options: ["4.1.5", "4.0.11"]
+  - key: JUPYTER_PORT
+    label: HTTP Port
+    default: "8888"
+    required: true
+    secret: false
+  - key: JUPYTER_TOKEN
+    label: Access Token
+    default: "lab"
+    required: true
+    secret: true
+composeTemplate: |
+  version: "3.8"
+  services:
+    jupyter:
+      image: jupyter/base-notebook:{{JUPYTER_VERSION}}
+      environment:
+        - JUPYTER_TOKEN={{JUPYTER_TOKEN}}
+      ports:
+        - "{{JUPYTER_PORT}}:8888"
+
+envTemplate: |
+  JUPYTER_VERSION={{JUPYTER_VERSION}}
+  JUPYTER_PORT={{JUPYTER_PORT}}
+  JUPYTER_TOKEN={{JUPYTER_TOKEN}}
+readmeTemplate: |
+  # JupyterLab (Standalone)
+
+  ## Run
+  ```bash
+  docker compose up -d
+  ```
+
+  ## Access
+  - UI: http://localhost:{{JUPYTER_PORT}} (token: {{JUPYTER_TOKEN}})
